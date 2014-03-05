@@ -1,0 +1,1 @@
+run("MultiStackReg", "stack_1=B action_1=[Load Transformation File] file_1=c:\tmp\TransformationMatrices.txt stack_2=None action_2=Ignore file_2=[] transformation=[Rigid Body]");

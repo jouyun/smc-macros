@@ -1,0 +1,4 @@
+run("Interleave", "stack=A stack=B");
+
+makeRectangle(197, 201, 643, 721);
+run("Crop");
