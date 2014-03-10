@@ -1,6 +1,6 @@
 current_file=getArgument;
-
-selection_threshold=0.4;
+setBatchMode(true);
+selection_threshold=0.5;
 
 if (current_file=="")
 {
@@ -45,7 +45,7 @@ run("32-bit");
 run("Subtract Background...", "rolling=50 stack");
 print("\\Clear");
 Stack.setChannel(3);
-run("find blob 3D tester", "threshold=510 minimum=20 selection="+selection_threshold);
+run("find blob 3D tester", "threshold=510 minimum=50 selection="+selection_threshold);
 
 rename("C");
 run("32-bit");
