@@ -44,7 +44,37 @@ slices=slices-1;
 run("32-bit");
 run("Subtract Background...", "rolling=50 stack");
 print("\\Clear");
-Stack.setChannel(3);
+Stack.setChannel(2);
+
+run("find colocalization candidates 3D percentile", "threshold=550 minimum=80 percentile=0.80");
+run("Make Composite", "display=Composite");
+run("Green");
+Stack.setChannel(2);
+run("Magenta");
+run("In [+]");
+run("In [+]");
+run("In [+]");
+run("In [+]");
+run("In [+]");
+run("In [+]");
+run("Histogram Normalize Percentile", "sample=1 percentile_max=90 percentile_min=10 mymax=100 mymin=20");
+selectWindow("B");
+close();
+logs=getInfo("log");
+selectWindow("TempImg");
+
+saveAs("Tiff", current_file+"_"+substring(logs,0,lengthOf(logs)-1)+"_candidates.tif");
+
+close();
+
+
+
+
+
+
+return("");
+
+
 run("find blob 3D tester", "threshold=510 minimum=50 selection="+selection_threshold);
 
 rename("C");
