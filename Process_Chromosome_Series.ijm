@@ -1,0 +1,17 @@
+run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
+setMinAndMax(0, 255);
+run("32-bit");
+run("Percentile Threshold", "percentile=50 snr=20");
+run("Erode");
+run("Fill Holes");
+run("Analyze Particles...", "size=0-15 show=Masks ");
+selectWindow("Mask of Result");
+run("Invert LUT");
+run("Dilate");
+run("Dilate");
+run("Dilate");
+run("Dilate");
+run("Dilate");
+run("Dilate");
+run("Analyze Particles...", "size=1000-Infinity show=Masks display");
+run("Invert LUT");

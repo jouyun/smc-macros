@@ -1,13 +1,13 @@
 source_dir = getDirectory("Source Directory");
 if (File.exists(source_dir)) {
     //setBatchMode(true);
-    output_path=source_dir+"\\output\\";
+    output_path=source_dir+File.separator+"output"+File.separator;
     File.makeDirectory(output_path);
     list = getFileList(source_dir);
     for (i=0; i<list.length; i++) {
         if (endsWith(list[i], ".avi") )
         {
-        	file_output_path=output_path+list[i]+"\\";
+        	file_output_path=output_path+list[i]+File.separator;
         	File.makeDirectory(file_output_path);
         	
 		full_path_name=source_dir+list[i];

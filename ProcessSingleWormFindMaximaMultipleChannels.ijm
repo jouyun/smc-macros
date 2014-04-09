@@ -1,13 +1,13 @@
 peak1_channel=2;
 peak2_channel=3;
-//peak3_channel=4;
+peak3_channel=4;
 DAPI_channel=1;
 
 //Changed 20 to 10 09252013, J2 from 0805 bad
 SNR_worm=8;
 SNR_peaks1=300;
 SNR_peaks2=200;
-//SNR_peaks3=1000;
+SNR_peaks3=400;
 
 
 current_file=getArgument;
@@ -25,7 +25,7 @@ run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 open(current_file);
 
 title=getTitle();
-run("Max Project With Reference", "channels=3 frames=1");
+run("Max Project With Reference", "channels=4 frames=1");
 selectWindow(title);
 close();
 selectWindow("Img");
@@ -36,8 +36,8 @@ selectWindow(title);
 setSlice(peak2_channel);
 run("Duplicate...", "title=Peaks2 channels="+peak2_channel);
 selectWindow(title);
-/*setSlice(peak3_channel);
-run("Duplicate...", "title=Peaks3 channels="+peak3_channel);*/
+setSlice(peak3_channel);
+run("Duplicate...", "title=Peaks3 channels="+peak3_channel);
 selectWindow(title);
 setSlice(DAPI_channel);
 run("Duplicate...", "title=DAPI channels="+DAPI_channel);
@@ -101,7 +101,7 @@ if (still_good>0)
 	rename("Spots2");
 	run("16-bit");
 
-	/*selectWindow("Peaks3");
+	selectWindow("Peaks3");
 	run("Smooth", "slice");
 	roiManager("Select", 0);
 	run("Measure");
@@ -110,12 +110,12 @@ if (still_good>0)
 	run("Find Maxima...", "noise="+SNR_peaks3+" output=[Single Points]");
 	run("Dilate");
 	rename("Spots3");
-	run("16-bit");*/
+	run("16-bit");
 
 	selectWindow("Mask");
 	run("16-bit");
-	run("Concatenate...", "  title=[Concatenated Stacks] image1=Mask image2=Peaks1 image3=Spots1 image4=Peaks2 image5=Spots2 image6=[-- None --]");
-	//run("Concatenate...", "  title=[Concatenated Stacks] image1=Mask image2=Peaks1 image3=Spots1 image4=Peaks2 image5=Spots2 image6=Peaks3 image7=Spots3 image8=[-- None --]");
+	//run("Concatenate...", "  title=[Concatenated Stacks] image1=Mask image2=Peaks1 image3=Spots1 image4=Peaks2 image5=Spots2 image6=[-- None --]");
+	run("Concatenate...", "  title=[Concatenated Stacks] image1=Mask image2=Peaks1 image3=Spots1 image4=Peaks2 image5=Spots2 image6=Peaks3 image7=Spots3 image8=[-- None --]");
 
 	setSlice(3);
 	run("Find Maxima...", "noise="+(100)+" output=Count");
@@ -123,9 +123,9 @@ if (still_good>0)
 	setSlice(5);
 	run("Find Maxima...", "noise="+(100)+" output=Count");
 	peak2_count=getResult("Count");
-	/*setSlice(7);
+	setSlice(7);
 	run("Find Maxima...", "noise="+(100)+" output=Count");
-	peak3_count=getResult("Count");*/
+	peak3_count=getResult("Count");
 	
 	run("Re-order Hyperstack ...", "channels=[Slices (z)] slices=[Channels (c)] frames=[Frames (t)]");
 	Stack.setDisplayMode("grayscale");
@@ -139,10 +139,10 @@ if (still_good>0)
 	setMinAndMax(41.2383, 800);
 	setSlice(5);
 	run("Enhance Contrast", "saturated=0.35");
-	/*setSlice(6);
+	setSlice(6);
 	setMinAndMax(41.2383, 800);
 	setSlice(7);
-	run("Enhance Contrast", "saturated=0.35");*/
+	run("Enhance Contrast", "saturated=0.35");
 	setSlice(1);
 	run("32-bit");
 }
@@ -154,8 +154,8 @@ Stack.getDimensions(width, height, channels, slices, frames);
 if (still_good&&(width>1024||height>1024)) 
 {
 	print("\\Clear");
-	IJ.log(""+peak1_count+","+peak2_count+","+getResult("Area",2)+","+max+","+min+","+Dmax+","+Dmin);
-	//IJ.log(""+peak1_count+","+peak2_count+","+peak3_count +","+getResult("Area",2)+","+max+","+min+","+Dmax+","+Dmin);
+	//IJ.log(""+peak1_count+","+peak2_count+","+getResult("Area",2)+","+max+","+min+","+Dmax+","+Dmin);
+	IJ.log(""+peak1_count+","+peak2_count+","+peak3_count +","+getResult("Area",2)+","+max+","+min+","+Dmax+","+Dmin);
 	logs=getInfo("log");
 	saveAs("Tiff", current_file+"_mask.tif");
 	close();

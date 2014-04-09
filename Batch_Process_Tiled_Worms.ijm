@@ -16,7 +16,7 @@ for (n=0; n<source_list.length; n++)
 {
 	if (File.isDirectory(source_dir+source_list[n])==1)
 	{
-		worm_dir=source_dir+source_list[n]+"Worms\\";
+		worm_dir=source_dir+source_list[n]+"Worms"+File.separator;
 		//worm_dir=source_dir+source_list[n]+"\\";
 		list=getFileList(worm_dir);
 		for (m=0; m<list.length; m++) 
@@ -38,3 +38,5 @@ for (n=0; n<source_list.length; n++)
 	}
 }
 File.close(f)
+run("Close All");
+run("Quit");

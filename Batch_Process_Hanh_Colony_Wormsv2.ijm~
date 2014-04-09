@@ -8,7 +8,7 @@ else
 	source_dir=name;
 }
 run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
-setBatchMode(true);
+setBatchMode(false);
 source_list = getFileList(source_dir);
 for (n=0; n<source_list.length; n++)
 {
@@ -28,5 +28,3 @@ for (n=0; n<source_list.length; n++)
 		}
 	}
 }
-run("Close All");
-run("Quit");

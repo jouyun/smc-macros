@@ -22,10 +22,10 @@ for (n=0; n<source_list.length; n++)
 		for (m=0; m<list.length; m++) 
 		{
 			//setBatchMode(true);
-			if (endsWith(list[m],"composite.tif")==0)
+			if (endsWith(list[m],"composite.tif")==0&&endsWith(list[m],"candidates.tif")==0)
 			{
 				IJ.log(worm_dir+list[m]);
-				logs=runMacro("Process_LiChun_Colonies.ijm", worm_dir+list[m]);
+				logs=runMacro("U:\\smc\\FiJi.app\\macros\\Process_LiChun_Colonies.ijm", worm_dir+list[m]);
 				{
 					peaks=logs;
 					print(f, worm_dir+","+ list[m]+","+peaks);

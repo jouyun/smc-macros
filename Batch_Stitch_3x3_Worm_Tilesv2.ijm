@@ -16,15 +16,16 @@ else
 {
 	source_dir=name;
 }
-//setBatchMode(true);
+IJ.log(source_dir);
+setBatchMode(true);
 list = getFileList(source_dir);
 IJ.log(list[0]);
 for (m=0; m<list.length; m++) 
 {
-		//setBatchMode(true);
+		setBatchMode(true);
 		idx=lengthOf(list[m])-1;
 		list[m]=substring(list[m],0,idx);
-		file_path=source_dir+list[m]+"\\";
+		file_path=source_dir+list[m]+File.separator;
 		current_file=file_path+list[m]+".mvd2";
 		IJ.log(current_file);	
 
@@ -114,8 +115,8 @@ for (m=0; m<list.length; m++)
 		}
 		Stack.getDimensions(width, height, channels, slices, frames);
 		p_title=getTitle();
-		new_directory=file_path+"Worms\\";
-		tmp_directory=file_path+"tmp\\";
+		new_directory=file_path+"Worms"+File.separator;
+		tmp_directory=file_path+"tmp"+File.separator;
 		IJ.log(new_directory);
 		File.makeDirectory(new_directory);
 		File.makeDirectory(tmp_directory);
@@ -172,3 +173,5 @@ for (m=0; m<list.length; m++)
 			wst=File.delete(tmp_directory+tmps_list[k]);
 		}
 }
+run("Close All");
+run("Quit");

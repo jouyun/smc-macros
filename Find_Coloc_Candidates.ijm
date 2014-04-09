@@ -1,5 +1,5 @@
 current_file=getArgument;
-setBatchMode(false);
+setBatchMode(true);
 selection_threshold=0.5;
 
 if (current_file=="")
@@ -18,25 +18,31 @@ slices=(nSlices)/2;
 //selectWindow(t);
 //close();
 //selectWindow("A");
+IJ.log("About to scale");
 run("Scale...", "x=.5 y=.5 z=1.0 width=1741 height=672 depth="+slices+" interpolation=Bilinear average process create title=B");
+IJ.log("Made it through scale");
 selectWindow(t);
 close();
 selectWindow("B");
 
 run("Split Channels");
+IJ.log("Split");
 selectWindow("C1-B");
 run("Duplicate...", "title=Smoo duplicate range=1-"+nSlices);
+IJ.log("Duplicated");
 run("Mean...", "radius=20 stack");
 imageCalculator("Subtract create 32-bit stack", "C1-B","Smoo");
+IJ.log("Subtracted");
 selectWindow("Result of C1-B");
 run("Merge Channels...", "c1=[Result of C1-B] c2=C2-B create");
+IJ.log("Merged");
 rename("B");
 selectWindow("Smoo");
 close();
 selectWindow("C1-B");
 close();
 selectWindow("B");
-
+IJ.log("made it here");
 Stack.setSlice(slices);
 //Weird bug in the accquisition, last slice of last channel is not right place
 run("Delete Slice", "delete=slice");
@@ -45,8 +51,8 @@ run("32-bit");
 run("Subtract Background...", "rolling=50 stack");
 print("\\Clear");
 Stack.setChannel(2);
-
-run("find colocalization candidates 3D percentile", "threshold=550 minimum=80 percentile=0.80");
+//return("");
+run("find colocalization candidates 3D percentile", "threshold=400 minimum=80 percentile=0.85");
 run("Make Composite", "display=Composite");
 run("Green");
 Stack.setChannel(2);
