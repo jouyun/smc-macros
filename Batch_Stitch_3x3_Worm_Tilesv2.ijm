@@ -1,4 +1,4 @@
-channel_to_stitch_to=4;
+channel_to_stitch_to=3;
 other_channel=1;
 stitch_channel_blend="[Linear Blending]";
 //stitch_channel_blend="[Max. Intensity]";

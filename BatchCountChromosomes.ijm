@@ -21,11 +21,13 @@ for (n=0; n<source_list.length; n++)
 		my_name=source_list[n];
 		my_name=substring(my_name, 0, lengthOf(my_name)-1);
 		list=getFileList(my_dir);
+		IJ.log(my_dir);
 		for (m=0; m<list.length; m++) 
 		{
 			setBatchMode(false);
-			if (endsWith(list[m],"mask.tif")==0)
+			if (endsWith(list[m],"mask.tif")==0&&endsWith(list[m],".tif")==1)
 			{
+				IJ.log(my_dir+list[m]);
 				logs=runMacro("ChromosomeCountingv2.ijm", my_dir+list[m]);
 				if (starting_up)
 				{

@@ -1,8 +1,8 @@
-peak_channel=3;
-DAPI_channel=4;
+peak_channel=2;
+DAPI_channel=1;
 
 //Changed 20 to 10 09252013, J2 from 0805 bad
-SNR_worm=7;
+SNR_worm=10;
 SNR_peaks=100;
 //08052013 Hanh did 120, she said she wanted to avoid the dimmer spots so switched to 700
 

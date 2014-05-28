@@ -69,6 +69,7 @@ selectWindow("DAPI");
 
 if (still_good>0) 
 {
+	roiManager("Deselect");
 	roiManager("Select", 0);
 	run("Measure");
 	Dmax=getResult("Max");
@@ -81,6 +82,7 @@ if (still_good>0)
 
 	selectWindow("Peaks1");
 	run("Smooth", "slice");
+	roiManager("Deselect");
 	roiManager("Select", 0);
 	run("Measure");
 	max=getResult("Max");
@@ -89,9 +91,11 @@ if (still_good>0)
 	run("Dilate");
 	rename("Spots1");
 	run("16-bit");
+	
 
 	selectWindow("Peaks2");
 	run("Smooth", "slice");
+	roiManager("Deselect");
 	roiManager("Select", 0);
 	run("Measure");
 	max=getResult("Max");
@@ -103,6 +107,7 @@ if (still_good>0)
 
 	selectWindow("Peaks3");
 	run("Smooth", "slice");
+	roiManager("Deselect");
 	roiManager("Select", 0);
 	run("Measure");
 	max=getResult("Max");
