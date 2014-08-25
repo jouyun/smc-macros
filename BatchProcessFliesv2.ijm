@@ -7,7 +7,7 @@ else
 {
 	source_dir=name;
 }
-
+run("Options...", "iterations=1 count=1 black edm=Overwrite");
 if (File.exists(source_dir)) {
     setBatchMode(true);
     output_path=source_dir+File.separator+"output"+File.separator;
@@ -25,22 +25,26 @@ if (File.exists(source_dir)) {
 		run("AVI...", "select=["+full_path_name+"] first=2250 last=11250 convert");
 		for (m=0; m<30; m++) run("Delete Slice");
 		getDimensions(width, height, channels, slices, frames);
-		run("Z Project...", "start=1 stop="+slices+" projection=Median");
-		imageCalculator("Subtract create 32-bit stack", list[i],"MED_"+list[i]);
+		run("Z Project...", "start=1 stop="+slices+" projection=[Max Intensity]");
+		rename("Project");
+		imageCalculator("Subtract create 32-bit stack", list[i],"Project");
 		selectWindow("Result of "+list[i]);
 		selectWindow(list[i]);
 		close();
-		selectWindow("MED_"+list[i]);
+		selectWindow("Project");
 		close();
 		selectWindow("Result of "+list[i]);
 		setAutoThreshold("Otsu");
 		run("Convert to Mask", "calculate");
+		run("Invert", "stack");
 		orig_idx=getImageID();
 		title=getTitle();
 		IJ.log("\\Clear");
 		//run("MTrack2 smc ", "minimum=5 maximum=999999 maximum_=30 minimum_=2 pixels=30 min=14 frames=1");
 		//Kas code has 30 pixels, each well 144 pixels, our rig has 100 pixels per well so need 21 pixels instead of 30
 		//Kas code is designed for 30fps, ours is only 15fps, changed to 14
+		//
+		
 		run("MTrack2 smc ", "minimum=5 maximum=999999 maximum_=30 minimum_=2 pixels=30 min=14 frames=1");
 
 		last_idx=getImageID();

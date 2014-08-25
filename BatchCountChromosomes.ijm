@@ -38,6 +38,7 @@ for (n=0; n<source_list.length; n++)
 				{
 					run("Concatenate...", "  title=["+source_list[n]+"] image1=["+source_list[n]+"] image2=Final image3=[-- None --]");
 				}
+				IJ.log("Done!");
 			}
 		}
 		saveAs("Tiff", source_dir+my_name+".tif");

@@ -16,6 +16,7 @@ for (n=0; n<source_list.length; n++)
 	if (File.isDirectory(source_dir+source_list[n])==1)
 	{
 		rna_dir=source_dir+source_list[n]+File.separator;
+		IJ.log(rna_dir);
 		list=getFileList(rna_dir);
 		for (m=0; m<list.length; m++) 
 		{

@@ -1,7 +1,7 @@
 //run("Close All");
 
 ugly_blob_snr=300;
-ugly_blob_min_size=5000;
+ugly_blob_min_size=1000;
 chromosome_snr=40;
 chromosome_min_size=100;
 chromosome_max_size=100000;
@@ -24,11 +24,11 @@ run("32-bit");
 //run("Stack to Hyperstack...", "order=xyzct channels=2 slices="+(nSlices/2)+" frames=1 display=Grayscale");
 //run("Z Project...", "start=1 stop=9 projection=[Max Intensity]");
 run("Duplicate...", "title=Original duplicate channels=1");
-run("Percentile Threshold", "percentile=10 snr="+ugly_blob_snr);
-
+run("Percentile Threshold", "percentile=60 snr="+ugly_blob_snr);
 tmp=getTitle();
 
 run("Analyze Particles...", "size="+ugly_blob_min_size+"-Infinity circularity=0.50-1.00 show=Masks");
+
 run("Invert LUT");
 run("Dilate");
 run("Dilate");
@@ -61,13 +61,13 @@ for (i=0; i<roiManager("count"); i++)
 }
 //makeRectangle(18, 130, 994, 1010);
 //run("Crop");
+
 rename("Flat");
 run("Select All");
 
 
 
-
-run("Percentile Threshold", "percentile=30 snr="+chromosome_snr);
+run("Percentile Threshold", "percentile=60 snr="+chromosome_snr);
 
 run("Open");
 run("Analyze Particles...", "size="+chromosome_min_size+"-"+chromosome_max_size+" circularity=0.00-1.00 show=Masks display clear add");
@@ -75,6 +75,7 @@ run("Invert LUT");
 rename("ObjectMask");
 selectWindow("Flat");
 run("Smooth");
+
 run("Find Maxima...", "noise="+chromosome_find_maxima_thresh+" output=[Single Points]");
 rename("PointMask");
 imageCalculator("AND create", "ObjectMask","PointMask");
@@ -107,5 +108,3 @@ close();
 //selectWindow("Original");
 //close();
 selectWindow("Final");
-
-

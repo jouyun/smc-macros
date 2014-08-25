@@ -16,25 +16,23 @@ for (n=0; n<source_list.length; n++)
 {
 	if (File.isDirectory(source_dir+source_list[n])==1)
 	{
-		worm_dir=source_dir+source_list[n]+File.separator;
-		//worm_dir=source_dir+File.separator;
+		worm_dir=source_dir+source_list[n]+"Images"+File.separator;
+		//worm_dir=source_dir+source_list[n]+"\\";
 		list=getFileList(worm_dir);
 		for (m=0; m<list.length; m++) 
 		{
 			setBatchMode(true);
-			if (endsWith(list[m],"mask.tif")==0&&endsWith(list[m],".tif"))
+			run("Clear Results");
+			if (endsWith(list[m],"mask.tif")==0)
 			{
-				logs=runMacro("ProcessSingleWormFindMaximaMultipleChannels.ijm", worm_dir+list[m]);
-				//logs=runMacro("Process_Fluorescent_Protonephridia_Wormv4.ijm", worm_dir+list[m]);
-				comm=indexOf(logs,",");
-				if (comm!=-1)
+				runMacro("JackMacro.ijm", worm_dir+list[m]);
+				for (i=0; i<nResults; i++)
 				{
-					peaks=substring(logs,0,comm);
-					area=substring(logs, comm+1,lengthOf(logs));
-					print(f, worm_dir+","+ list[m]+","+peaks+","+ area);
+					print(f, worm_dir+","+ list[m]+","+getResult("Major", i)+","+ getResult("Minor",i));
 				}
 			}
+			
 		}
 	}
 }
-File.close(f)
+File.close(f);

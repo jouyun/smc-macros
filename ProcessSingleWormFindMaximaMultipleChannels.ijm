@@ -5,10 +5,10 @@ DAPI_channel=1;
 
 //Changed 20 to 10 09252013, J2 from 0805 bad
 SNR_worm=8;
-SNR_peaks1=300;
-SNR_peaks2=200;
-SNR_peaks3=400;
-
+SNR_peaks1=200;
+SNR_peaks2=400;
+SNR_peaks3=1500;
+setBatchMode(true);
 
 current_file=getArgument;
 
@@ -25,7 +25,13 @@ run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 open(current_file);
 
 title=getTitle();
-run("Max Project With Reference", "channels=4 frames=1");
+
+run("Stack to Hyperstack...", "order=xyzct channels=2 slices=25 frames=1 display=Grayscale");
+run("Z Project...", "projection=[Max Intensity]");
+run("Properties...", "channels=1 slices=2 frames=1 unit=pixel pixel_width=1.0000 pixel_height=1.0000 voxel_depth=1.0000");
+rename("Img");
+
+//run("Max Project With Reference", "channels=4 frames=1");
 selectWindow(title);
 close();
 selectWindow("Img");
