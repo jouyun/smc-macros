@@ -17,7 +17,7 @@ else
 	source_dir=name;
 }
 IJ.log(source_dir);
-setBatchMode(false);
+//setBatchMode(false);
 list = getFileList(source_dir);
 IJ.log(list[0]);
 for (m=0; m<list.length; m++) 
@@ -36,15 +36,12 @@ for (m=0; m<list.length; m++)
 		else
 		{
 			run("Bio-Formats Importer", "open=["+current_file+"] autoscale color_mode=Default concatenate_series open_all_series view=Hyperstack stack_order=XYCZT");
-			/*title=getTitle();  //OLD WAY
+			title=getTitle();  //OLD WAY
 			Stack.getDimensions(width, height, channels, slices, frames)
-			run("Z Project...", "start=1 stop="+slices+" projection=[Max Intensity] all");
 			p_title=getTitle();
-			selectWindow(title);
-			close();*/
-
+			
 			//New way
-			v=newArray(10,1000);
+			/*v=newArray(10,1000);
 			number_imgs=0;
 			main_idx=0;
 			number_images=nImages;
@@ -105,7 +102,7 @@ for (m=0; m<list.length; m++)
 					}
 				}
 			}
-			p_title=getTitle();
+			p_title=getTitle();*/
 			//END NEW WAY
 			
 		
@@ -114,22 +111,18 @@ for (m=0; m<list.length; m++)
 
 		}
 		Stack.getDimensions(width, height, channels, slices, frames);
+		tt=getTitle();
+		run("Paste Channel To Front", "channel=4 slice=1");
 		p_title=getTitle();
+		selectWindow(tt);
+		close();
+		selectWindow(p_title);		
 		new_directory=file_path+"Worms"+File.separator;
 		tmp_directory=file_path+"tmp"+File.separator;
 		IJ.log(new_directory);
 		File.makeDirectory(new_directory);
 		File.makeDirectory(tmp_directory);
-		order_string=""+channel_to_stitch_to;
-		for (n=1; n<=channels; n++)
-		{
-			if (n!=channel_to_stitch_to)
-			{
-				order_string=order_string+n;
-			}
-		}
 		runMacro("SaveMultipageImageSequence.ijm", tmp_directory);
-		run("Arrange Channels...", "new="+order_string);
 		number_worms=frames/x_dim/y_dim;
 		chan_title="Tiffs";
 		for (j=1; j<=number_worms; j++)
@@ -156,12 +149,30 @@ for (m=0; m<list.length; m++)
 				open(tmp_directory+"Stripe"+middle_index+".tif");
 				IJ.log("bungled one");
 			}
+			run("Delete Slice");
+			run("Stack to Hyperstack...", "order=xyczt(default) channels="+(channels)+" slices="+slices+" frames="+1+" display=Grayscale");
 			rename("Worm"+j+".tif");
 		}
 		
 		for (j=1; j<=number_worms; j++)
 		{
 			selectWindow("Worm"+j+".tif");
+			Stack.setSlice(slices);
+			run("Delete Slice", "delete=slice");
+			run("Duplicate...", "duplicate channels=4 slices=1");
+			ttt=getTitle();
+			run("32-bit");
+			run("Percentile Threshold", "percentile=10 snr=8");
+			run("Fill Holes");
+			run("Open");
+			run("Analyze Particles...", "size=100000-Infinity display clear add");
+			selectWindow("Result");
+			close();
+			selectWindow(ttt);
+			close();
+			selectWindow("Worm"+j+".tif");
+			roiManager("Select", 0);
+			run("Crop");
 			//run("Stack to Hyperstack...", "order=xyczt(default) channels="+channels+" slices=1 frames=1 display=Grayscale");
 			saveAs("Tiff", new_directory+"Worm"+j+".tif");
 			close();

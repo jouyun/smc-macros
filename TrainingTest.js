@@ -9,11 +9,12 @@ importClass(Packages.trainableSegmentation.FeatureStack);
 importClass(Packages.trainableSegmentation.FeatureStackArray);
 importClass(Packages.trainableSegmentation.WekaSegmentation);
  importClass(Packages.ij.plugin.frame.RoiManager); 
+ importClass(Packages.ij.WindowManager); 
 
 var feature_image=WindowManager.getCurrentImage();
 //var feature_image=IJ.openImage("/n/projects/smc/public/SMC/WEKA/p53_16h_01/Features.tif");
  
-var image = IJ.openImage("/n/projects/smc/public/SMC/WEKA/p53_16h_01/DAPI.tif");
+var image = IJ.openImage("D:\\SMC\\4.5_26\\4.5_26 N2.tif");
 /*if (image.getStackSize() > 1)
         new StackConverter(image).convertToGray32();
 else
@@ -62,7 +63,7 @@ var wekaSegmentation = new WekaSegmentation(image);
 wekaSegmentation.setFeatureStackArray(featureStackArray);
 
 manager = RoiManager.getInstance(); 
-manager.runCommand("Open", "/n/projects/smc/public/SMC/WEKA/RealTrain_Edgesonly.zip");
+//manager.runCommand("Open", "/n/projects/smc/public/SMC/WEKA/RealTrain_Edgesonly.zip");
 rois = manager.getRoisAsArray(); 
 for (i=0; i<5; i++) 
 {
@@ -88,4 +89,4 @@ if (!wekaSegmentation.trainClassifier())
 output=wekaSegmentation.applyClassifier(featureStackArray, 32, true);
 output.show();
 
-wekaSegmentation.saveClassifier("/n/projects/smc/public/SMC/WEKA/laplace_structure_deriv.model");
+wekaSegmentation.saveClassifier("D:\\SMC\\laplace_structure_deriv2.model");

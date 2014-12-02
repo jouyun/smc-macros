@@ -6,7 +6,7 @@ chromosome_snr=40;
 chromosome_min_size=100;
 chromosome_max_size=100000;
 //Prior to 08262014 this was 3, changed to 10
-chromosome_find_maxima_thresh=10;
+chromosome_find_maxima_thresh=200;
 
 current_file=getArgument;
 
@@ -18,74 +18,55 @@ else
 {
 	//current_file=name;
 }
-setBatchMode(false);
+setBatchMode(true);
 open(current_file);
 t=getTitle();
 run("32-bit");
-//run("Stack to Hyperstack...", "order=xyzct channels=2 slices="+(nSlices/2)+" frames=1 display=Grayscale");
-//run("Z Project...", "start=1 stop=9 projection=[Max Intensity]");
 run("Duplicate...", "title=Original duplicate channels=1");
-run("Percentile Threshold", "percentile=60 snr="+ugly_blob_snr);
-tmp=getTitle();
 
-run("Analyze Particles...", "size="+ugly_blob_min_size+"-Infinity circularity=0.50-1.00 show=Masks");
+selectWindow(t);
 
-run("Invert LUT");
-run("Dilate");
-run("Dilate");
-run("Dilate");
-run("Dilate");
-run("Dilate");
-run("Dilate");
-run("Dilate");
 
-roiManager("reset");
-run("Analyze Particles...", "size="+ugly_blob_min_size+"-Infinity circularity=0.50-1.00 show=Nothing add");
-
+runMacro("ClassifierTest.js");
+run("Duplicate...", "title=ObjectMask1");
+setAutoThreshold("Default dark");
+//run("Threshold...");
+setThreshold(0.0800, 0.7940);
+run("Convert to Mask");
+selectWindow("Probability maps");
 close();
-selectWindow(tmp);
+selectWindow("Features");
 close();
+selectWindow("ObjectMask1");
+//run("Dilate");
+//run("Dilate");
+//run("Dilate");
 
 
-//run("Correct Flatness", "xcenter=514 ycenter=730 xwidth=650 ywidth=650 background=7");
-
+selectWindow("Original");
 run("Subtract Background...", "rolling=50");
-tt=getTitle();
-setMinAndMax(0, 10000);
-setBackgroundColor(0, 0, 0);
-for (i=0; i<roiManager("count"); i++)
-{
-	selectWindow(tt);
-	roiManager("Select", i);
-	run("Clear", "slice");
-	roiManager("Deselect");
-}
-//makeRectangle(18, 130, 994, 1010);
-//run("Crop");
-
-rename("Flat");
-run("Select All");
-
-
-
+run("Smooth");
 run("Percentile Threshold", "percentile=60 snr="+chromosome_snr);
 
 run("Open");
 run("Analyze Particles...", "size="+chromosome_min_size+"-"+chromosome_max_size+" circularity=0.00-1.00 show=Masks display clear add");
 run("Invert LUT");
+rename("ObjectMask2");
+imageCalculator("AND create", "ObjectMask1","ObjectMask2");
 rename("ObjectMask");
-selectWindow("Flat");
-run("Smooth");
-
+run("Fill Holes");
+selectWindow("Original");
 run("Find Maxima...", "noise="+chromosome_find_maxima_thresh+" output=[Single Points]");
+
 rename("PointMask");
 imageCalculator("AND create", "ObjectMask","PointMask");
+//return("");
 rename("AND");
 run("Dilate");
 run("32-bit");
 
 run("Find Maxima...", "noise=200 output=Count");
-run("Concatenate...", "  title=Final image1=AND image2=Flat image3=[-- None --]");
+run("Concatenate...", "  title=Final image1=AND image2=Original image3=[-- None --]");
 run("Channels Tool...");
 run("Make Composite", "display=Composite");
 setSlice(2);
@@ -104,8 +85,12 @@ selectWindow("PointMask");
 close();
 selectWindow("ObjectMask");
 close();
+selectWindow("ObjectMask2");
+close();
+selectWindow("Final");
 selectWindow("Result");
 close();
-//selectWindow("Original");
-//close();
+selectWindow("Final");
+selectWindow("ObjectMask1");
+close();
 selectWindow("Final");

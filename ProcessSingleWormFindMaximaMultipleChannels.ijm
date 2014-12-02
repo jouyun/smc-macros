@@ -5,33 +5,27 @@ DAPI_channel=1;
 
 //Changed 20 to 10 09252013, J2 from 0805 bad
 SNR_worm=8;
-SNR_peaks1=200;
-SNR_peaks2=400;
-SNR_peaks3=1500;
-setBatchMode(true);
+SNR_peaks1=100;
+SNR_peaks2=200;
+SNR_peaks3=400;
+
 
 current_file=getArgument;
 
 if (current_file=="")
 {
-	current_file = File.openDialog("Source Worm");
+     current_file = File.openDialog("Source Worm");
 }
 else
 {
-	//current_file=name;
+     //current_file=name;
 }
 
 run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 open(current_file);
-
+run("Slice Keeper", "first=1 last=64 increment=1");
 title=getTitle();
-
-run("Stack to Hyperstack...", "order=xyzct channels=2 slices=25 frames=1 display=Grayscale");
-run("Z Project...", "projection=[Max Intensity]");
-run("Properties...", "channels=1 slices=2 frames=1 unit=pixel pixel_width=1.0000 pixel_height=1.0000 voxel_depth=1.0000");
-rename("Img");
-
-//run("Max Project With Reference", "channels=4 frames=1");
+run("Max Project With Reference", "channels=4 frames=1");
 selectWindow(title);
 close();
 selectWindow("Img");
@@ -73,103 +67,103 @@ if (nResults>0) still_good=1;
 rename("Mask");
 selectWindow("DAPI");
 
-if (still_good>0) 
+if (still_good>0)
 {
-	roiManager("Deselect");
-	roiManager("Select", 0);
-	run("Measure");
-	Dmax=getResult("Max");
-	Dmin=getResult("Min");
-	close();
-	max=0;
-	min=0;
-	IJ.log("results:  "+nResults);
-	still_good=1;
+     roiManager("Deselect");
+     roiManager("Select", 0);
+     run("Measure");
+     Dmax=getResult("Max");
+     Dmin=getResult("Min");
+     close();
+     max=0;
+     min=0;
+     IJ.log("results:  "+nResults);
+     still_good=1;
 
-	selectWindow("Peaks1");
-	run("Smooth", "slice");
-	roiManager("Deselect");
-	roiManager("Select", 0);
-	run("Measure");
-	max=getResult("Max");
-	min=getResult("Min");
-	run("Find Maxima...", "noise="+SNR_peaks1+" output=[Single Points]");
-	run("Dilate");
-	rename("Spots1");
-	run("16-bit");
-	
+     selectWindow("Peaks1");
+     run("Smooth", "slice");
+     roiManager("Deselect");
+     roiManager("Select", 0);
+     run("Measure");
+     max=getResult("Max");
+     min=getResult("Min");
+     run("Find Maxima...", "noise="+SNR_peaks1+" output=[Single Points]");
+     run("Dilate");
+     rename("Spots1");
+     run("16-bit");
+   
 
-	selectWindow("Peaks2");
-	run("Smooth", "slice");
-	roiManager("Deselect");
-	roiManager("Select", 0);
-	run("Measure");
-	max=getResult("Max");
-	min=getResult("Min");
-	run("Find Maxima...", "noise="+SNR_peaks2+" output=[Single Points]");
-	run("Dilate");
-	rename("Spots2");
-	run("16-bit");
+     selectWindow("Peaks2");
+     run("Smooth", "slice");
+     roiManager("Deselect");
+     roiManager("Select", 0);
+     run("Measure");
+     max=getResult("Max");
+     min=getResult("Min");
+     run("Find Maxima...", "noise="+SNR_peaks2+" output=[Single Points]");
+     run("Dilate");
+     rename("Spots2");
+     run("16-bit");
 
-	selectWindow("Peaks3");
-	run("Smooth", "slice");
-	roiManager("Deselect");
-	roiManager("Select", 0);
-	run("Measure");
-	max=getResult("Max");
-	min=getResult("Min");
-	run("Find Maxima...", "noise="+SNR_peaks3+" output=[Single Points]");
-	run("Dilate");
-	rename("Spots3");
-	run("16-bit");
+     selectWindow("Peaks3");
+     run("Smooth", "slice");
+     roiManager("Deselect");
+     roiManager("Select", 0);
+     run("Measure");
+     max=getResult("Max");
+     min=getResult("Min");
+     run("Find Maxima...", "noise="+SNR_peaks3+" output=[Single Points]");
+     run("Dilate");
+     rename("Spots3");
+     run("16-bit");
 
-	selectWindow("Mask");
-	run("16-bit");
-	//run("Concatenate...", "  title=[Concatenated Stacks] image1=Mask image2=Peaks1 image3=Spots1 image4=Peaks2 image5=Spots2 image6=[-- None --]");
-	run("Concatenate...", "  title=[Concatenated Stacks] image1=Mask image2=Peaks1 image3=Spots1 image4=Peaks2 image5=Spots2 image6=Peaks3 image7=Spots3 image8=[-- None --]");
+     selectWindow("Mask");
+     run("16-bit");
+     //run("Concatenate...", "  title=[Concatenated Stacks] image1=Mask image2=Peaks1 image3=Spots1 image4=Peaks2 image5=Spots2 image6=[-- None --]");
+     run("Concatenate...", "  title=[Concatenated Stacks] image1=Mask image2=Peaks1 image3=Spots1 image4=Peaks2 image5=Spots2 image6=Peaks3 image7=Spots3 image8=[-- None --]");
 
-	setSlice(3);
-	run("Find Maxima...", "noise="+(100)+" output=Count");
-	peak1_count=getResult("Count");
-	setSlice(5);
-	run("Find Maxima...", "noise="+(100)+" output=Count");
-	peak2_count=getResult("Count");
-	setSlice(7);
-	run("Find Maxima...", "noise="+(100)+" output=Count");
-	peak3_count=getResult("Count");
-	
-	run("Re-order Hyperstack ...", "channels=[Slices (z)] slices=[Channels (c)] frames=[Frames (t)]");
-	Stack.setDisplayMode("grayscale");
-	setSlice(1);
-	run("Enhance Contrast", "saturated=0.35");
-	setSlice(2);
-	setMinAndMax(41.2383, 800);
-	setSlice(3);
-	run("Enhance Contrast", "saturated=0.35");
-	setSlice(4);
-	setMinAndMax(41.2383, 800);
-	setSlice(5);
-	run("Enhance Contrast", "saturated=0.35");
-	setSlice(6);
-	setMinAndMax(41.2383, 800);
-	setSlice(7);
-	run("Enhance Contrast", "saturated=0.35");
-	setSlice(1);
-	run("32-bit");
+     setSlice(3);
+     run("Find Maxima...", "noise="+(100)+" output=Count");
+     peak1_count=getResult("Count");
+     setSlice(5);
+     run("Find Maxima...", "noise="+(100)+" output=Count");
+     peak2_count=getResult("Count");
+     setSlice(7);
+     run("Find Maxima...", "noise="+(100)+" output=Count");
+     peak3_count=getResult("Count");
+   
+     run("Re-order Hyperstack ...", "channels=[Slices (z)] slices=[Channels (c)] frames=[Frames (t)]");
+     Stack.setDisplayMode("grayscale");
+     setSlice(1);
+     run("Enhance Contrast", "saturated=0.35");
+     setSlice(2);
+     setMinAndMax(41.2383, 800);
+     setSlice(3);
+     run("Enhance Contrast", "saturated=0.35");
+     setSlice(4);
+     setMinAndMax(41.2383, 800);
+     setSlice(5);
+     run("Enhance Contrast", "saturated=0.35");
+     setSlice(6);
+     setMinAndMax(41.2383, 800);
+     setSlice(7);
+     run("Enhance Contrast", "saturated=0.35");
+     setSlice(1);
+     run("32-bit");
 }
 else
 {
-	close();
+     close();
 }
 Stack.getDimensions(width, height, channels, slices, frames);
-if (still_good&&(width>1024||height>1024)) 
+if (still_good&&(width>1024||height>1024))
 {
-	print("\\Clear");
-	//IJ.log(""+peak1_count+","+peak2_count+","+getResult("Area",2)+","+max+","+min+","+Dmax+","+Dmin);
-	IJ.log(""+peak1_count+","+peak2_count+","+peak3_count +","+getResult("Area",2)+","+max+","+min+","+Dmax+","+Dmin);
-	logs=getInfo("log");
-	saveAs("Tiff", current_file+"_mask.tif");
-	close();
-	return logs;
+     print("\\Clear");
+     //IJ.log(""+peak1_count+","+peak2_count+","+getResult("Area",2)+","+max+","+min+","+Dmax+","+Dmin);
+     IJ.log(""+peak1_count+","+peak2_count+","+peak3_count +","+getResult("Area",2)+","+max+","+min+","+Dmax+","+Dmin);
+     logs=getInfo("log");
+     saveAs("Tiff", current_file+"_mask.tif");
+     close();
+     return logs;
 }
 run("Close All");

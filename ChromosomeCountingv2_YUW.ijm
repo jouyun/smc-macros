@@ -2,11 +2,11 @@
 
 ugly_blob_snr=300;
 ugly_blob_min_size=1000;
-chromosome_snr=40;
+chromosome_snr=30;
 chromosome_min_size=100;
 chromosome_max_size=100000;
 //Prior to 08262014 this was 3, changed to 10
-chromosome_find_maxima_thresh=10;
+chromosome_find_maxima_thresh=100;
 
 current_file=getArgument;
 
@@ -27,7 +27,6 @@ run("32-bit");
 run("Duplicate...", "title=Original duplicate channels=1");
 run("Percentile Threshold", "percentile=60 snr="+ugly_blob_snr);
 tmp=getTitle();
-
 run("Analyze Particles...", "size="+ugly_blob_min_size+"-Infinity circularity=0.50-1.00 show=Masks");
 
 run("Invert LUT");
@@ -69,7 +68,6 @@ run("Select All");
 
 
 run("Percentile Threshold", "percentile=60 snr="+chromosome_snr);
-
 run("Open");
 run("Analyze Particles...", "size="+chromosome_min_size+"-"+chromosome_max_size+" circularity=0.00-1.00 show=Masks display clear add");
 run("Invert LUT");

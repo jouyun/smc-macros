@@ -9,6 +9,7 @@ importClass(Packages.trainableSegmentation.FeatureStack);
 importClass(Packages.trainableSegmentation.FeatureStackArray);
 importClass(Packages.trainableSegmentation.WekaSegmentation);
 importClass(Packages.ij.plugin.frame.RoiManager); 
+importClass(Packages.ij.WindowManager); 
 
 IJ.run("MultiThread Test");
 var feature_image=WindowManager.getCurrentImage();
@@ -33,7 +34,7 @@ var featureStackArray = new FeatureStackArray(1, 1, 16, false,
  
 var wekaSegmentation = new WekaSegmentation(feature_image);
 //wekaSegmentation.setFeatureStackArray(featureStackArray);
-wekaSegmentation.loadClassifier("/n/projects/smc/public/SMC/WEKA/laplace_structure_deriv.model");
+wekaSegmentation.loadClassifier("D:\\SMC\\laplace_structure_deriv2.model");
 
  
 output=wekaSegmentation.applyClassifier(featureStackArray, 32, true);

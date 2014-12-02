@@ -1,9 +1,9 @@
-peak_channel=2;
-DAPI_channel=1;
+peak_channel=1;
+DAPI_channel=4;
 
 //Changed 20 to 10 09252013, J2 from 0805 bad
 SNR_worm=10;
-SNR_peaks=100;
+SNR_peaks=30;
 //08052013 Hanh did 120, she said she wanted to avoid the dimmer spots so switched to 700
 
 
@@ -28,7 +28,7 @@ selectWindow(title);
 setSlice(DAPI_channel);
 run("Duplicate...", "title=DAPI channels="+DAPI_channel);
 
-setBackgroundColor(0,0,0);
+/*setBackgroundColor(0,0,0);
 run("Duplicate...", "title=Mask channels=1");
 
 run("Clear Outside");
@@ -51,8 +51,8 @@ run("Erode");
 run("Erode");
 run("Erode");
 selectWindow(title);
-close();
-/*
+close();*/
+
 run("32-bit");
 run("Percentile Threshold", "percentile=10 snr="+SNR_worm);
 
@@ -71,7 +71,7 @@ run("Fill Holes");
 rename("Mask");
 selectWindow("Result");
 close();
-selectWindow("Mask");*/
+selectWindow("Mask");
 
 
 run("Analyze Particles...", "size=100000-Infinity circularity=0.00-1.00 show=Nothing display clear add");
