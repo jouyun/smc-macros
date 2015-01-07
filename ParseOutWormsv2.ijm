@@ -25,12 +25,15 @@ for (m=0; m<list.length; m++)
 	
 		run("32-bit");
 		selectWindow("Fused.tif");
+		run("Duplicate...", "duplicate channels=4 slices=1");
+		rename("MyFused");
 		run("Percentile Threshold", "percentile=10 snr=20");
 		run("Fill Holes");
 		run("Open");
 		rename("Base");
-		selectWindow("Fused.tif");
-		runMacro("/home/smc/Fiji.app/macros/ClassifierTest.js");
+		selectWindow("MyFused");
+		//runMacro("/home/smc/Fiji.app/macros/ClassifierTest.js");
+		runMacro("ClassifierTest.js");
 		saveAs("Tiff", file_path+"WEKA.tif");
 		selectWindow("WEKA.tif");
 		setSlice(2);
@@ -74,7 +77,7 @@ close();
 		{
 			selectWindow("Fused.tif");
 			roiManager("Select", i);
-			run("Duplicate...", "title=Worm"+(i+1)+".tif duplicate channels=1-2");
+			run("Duplicate...", "title=Worm"+(i+1)+".tif duplicate channels=1-4");
 			saveAs("Tiff", worm_directory+"Worm"+(i+1)+".tif");
 			close();
 			

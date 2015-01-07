@@ -34,7 +34,9 @@ var featureStackArray = new FeatureStackArray(1, 1, 16, false,
  
 var wekaSegmentation = new WekaSegmentation(feature_image);
 //wekaSegmentation.setFeatureStackArray(featureStackArray);
-wekaSegmentation.loadClassifier("D:\\SMC\\laplace_structure_deriv2.model");
+//wekaSegmentation.loadClassifier("D:\\SMC\\laplace_structure_deriv2.model");
+//wekaSegmentation.loadClassifier("U:\\smc\\public\\SMC\\WEKA\\laplace_structure_deriv2.model");
+wekaSegmentation.loadClassifier("/home/smc/Data/SMC/WEKA/laplace_structure_deriv2.model");
 
  
 output=wekaSegmentation.applyClassifier(featureStackArray, 32, true);

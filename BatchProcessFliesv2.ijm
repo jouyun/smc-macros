@@ -9,7 +9,7 @@ else
 }
 run("Options...", "iterations=1 count=1 black edm=Overwrite");
 if (File.exists(source_dir)) {
-    setBatchMode(true);
+    setBatchMode(false);
     output_path=source_dir+File.separator+"output"+File.separator;
     File.makeDirectory(output_path);
     list = getFileList(source_dir);
@@ -34,9 +34,10 @@ if (File.exists(source_dir)) {
 		selectWindow("Project");
 		close();
 		selectWindow("Result of "+list[i]);
-		setAutoThreshold("Otsu");
-		run("Convert to Mask", "calculate");
 		run("Invert", "stack");
+		setAutoThreshold("Otsu dark");
+		run("Convert to Mask", "stack");
+		
 		orig_idx=getImageID();
 		title=getTitle();
 		IJ.log("\\Clear");

@@ -9,7 +9,7 @@ else
 }
 
 
-setBatchMode(true);
+setBatchMode(false);
 run("Set Measurements...", "area mean standard min centroid center bounding fit feret's integrated display redirect=None decimal=3");
 title=getTitle();
 run("Duplicate...", "title=Worm3.tif_mask-1.tif");
