@@ -24,7 +24,7 @@ for (n=0; n<source_list.length; n++)
 			setBatchMode(true);
 			if (endsWith(list[m],"mask.tif")==0)
 			{
-				logs=runMacro("ProcessSingleWormFindMaximav2.ijm", worm_dir+list[m]);
+				logs=runMacro("ProcessSingleWormFindMaxima.ijm", worm_dir+list[m]);
 				//logs=runMacro("Process_Fluorescent_Protonephridia_Wormv4.ijm", worm_dir+list[m]);
 				comm=indexOf(logs,",");
 				if (comm!=-1)

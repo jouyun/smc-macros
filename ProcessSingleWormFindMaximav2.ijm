@@ -1,9 +1,9 @@
 peak_channel=1;
-DAPI_channel=4;
+DAPI_channel=3;
 
 //Changed 20 to 10 09252013, J2 from 0805 bad
 SNR_worm=10;
-SNR_peaks=30;
+SNR_peaks=100;
 //08052013 Hanh did 120, she said she wanted to avoid the dimmer spots so switched to 700
 
 
@@ -22,6 +22,14 @@ run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 open(current_file);
 
 title=getTitle();
+
+run("Z Project...", "projection=[Max Intensity]");
+tt=getTitle();
+selectWindow(title);
+close();
+selectWindow(tt);
+rename(title);
+
 setSlice(peak_channel);
 run("Duplicate...", "title=Peaks channels="+peak_channel);
 selectWindow(title);
@@ -98,8 +106,10 @@ if (still_good>0)
 	run("Measure");
 	max=getResult("Max");
 	min=getResult("Min");
+	selectWindow("Peaks");
 	//adjusted_SNR_peaks=(getResult("Max")-getResult("Min"))/3800*SNR_peaks;
 	run("Find Maxima...", "noise="+SNR_peaks+" output=[Single Points]");
+	
 	run("Dilate");
 	rename("Spots");
 	run("16-bit");

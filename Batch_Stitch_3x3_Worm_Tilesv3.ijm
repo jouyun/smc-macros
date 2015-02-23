@@ -5,8 +5,8 @@ stitch_channel_blend="[Max. Intensity]";
 other_channel_blend="[Linear Blending]";
 other_channel_blend="[Max. Intensity]";
 
-x_dim=4;
-y_dim=4;
+x_dim=3;
+y_dim=3;
 name=getArgument;
 if (name=="")
 {
@@ -22,7 +22,7 @@ list = getFileList(source_dir);
 IJ.log(list[0]);
 for (m=0; m<list.length; m++) 
 {
-		setBatchMode(true);
+		setBatchMode(false);
 		idx=lengthOf(list[m])-1;
 		list[m]=substring(list[m],0,idx);
 		file_path=source_dir+list[m]+File.separator;

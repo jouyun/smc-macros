@@ -1,12 +1,9 @@
-channel_to_stitch_to=3;
 other_channel=1;
-stitch_channel_blend="[Linear Blending]";
+//stitch_channel_blend="[Linear Blending]";
 stitch_channel_blend="[Max. Intensity]";
-//other_channel_blend="[Linear Blending]";
+other_channel_blend="[Linear Blending]";
 other_channel_blend="[Max. Intensity]";
 
-x_dim=3;
-y_dim=3;
 name=getArgument;
 if (name=="")
 {
@@ -16,15 +13,16 @@ else
 {
 	source_dir=name;
 }
-//setBatchMode(true);
+IJ.log(source_dir);
+setBatchMode(true);
 list = getFileList(source_dir);
 IJ.log(list[0]);
 for (m=0; m<list.length; m++) 
 {
-		//setBatchMode(true);
+		setBatchMode(true);
 		idx=lengthOf(list[m])-1;
 		list[m]=substring(list[m],0,idx);
-		file_path=source_dir+list[m]+"\\";
+		file_path=source_dir+list[m]+File.separator;
 		current_file=file_path+list[m]+".mvd2";
 		IJ.log(current_file);	
 
@@ -114,51 +112,18 @@ for (m=0; m<list.length; m++)
 		}
 		Stack.getDimensions(width, height, channels, slices, frames);
 		p_title=getTitle();
-		new_directory=file_path+"Worms\\";
-		tmp_directory=file_path+"tmp\\";
+		new_directory=file_path+"Worms"+File.separator;
 		IJ.log(new_directory);
 		File.makeDirectory(new_directory);
-		File.makeDirectory(tmp_directory);
-		run("Duplicate...", "title="+p_title+"_tmp duplicate channels="+channel_to_stitch_to+" frames=1-"+frames);
-		chan_title=getTitle();
-		run("Image Sequence... ", "format=TIFF name="+chan_title+" start=0 digits=4 save=["+tmp_directory+chan_title+"0000.tif]");
-		selectWindow(chan_title);
-		close();
-		number_worms=frames/x_dim/y_dim;
-		for (j=1; j<=number_worms; j++)
+		
+		for (i=1; i<=frames; i++)
 		{
-			run("Grid/Collection stitching", "type=[Grid: snake by rows] order=[Right & Up] grid_size_x="+x_dim+" grid_size_y="+y_dim+" tile_overlap=20 first_file_index_i="+((j-1)*x_dim*y_dim)+" directory=["+tmp_directory+"] file_names="+chan_title+"{iiii}.tif output_textfile_name=TileConfiguration_"+j+".txt fusion_method="+stitch_channel_blend+" regression_threshold=0.95 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]");
-			//run("Grid/Collection stitching", "type=[Grid: snake by rows] order=[Right & Up] grid_size_x="+x_dim+" grid_size_y="+y_dim+" tile_overlap=20 first_file_index_i="+((j-1)*x_dim*y_dim)+" directory=["+tmp_directory+"] file_names="+chan_title+"{iiii}.tif output_textfile_name=TileConfiguration_"+j+".txt fusion_method="+stitch_channel_blend+" regression_threshold=0.3 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]");
-			rename("Worm"+j+".tif");
-			//saveAs("Tiff", new_directory+"Worm"+j+".tif");
-			//close();
-		}
-
-		for (n=1; n<=channels; n++)
-		{
-			if (n!=channel_to_stitch_to)
-			{
-				selectWindow(p_title);
-				run("Duplicate...", "title="+p_title+"_tmp duplicate channels="+n+" frames=1-"+frames);
-				chan_title=getTitle();
-				run("Image Sequence... ", "format=TIFF name="+chan_title+" start=0 digits=4 save=["+tmp_directory+chan_title+"0000.tif]");
-				selectWindow(chan_title);
-				close();
-
-				for (j=1; j<=number_worms; j++)
-				{
-					run("Grid/Collection stitching", "type=[Positions from file] order=[Defined by TileConfiguration] directory=["+tmp_directory+"] layout_file=TileConfiguration_"+j+".registered.txt fusion_method="+other_channel_blend+" regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]");
-					run("Concatenate...", "  title=Worm"+j+".tif image1=Worm"+j+".tif image2=Fused image3=[-- None --]");
-				}
-			}
-		}
-		for (j=1; j<=number_worms; j++)
-		{
-			selectWindow("Worm"+j+".tif");
-			run("Stack to Hyperstack...", "order=xyczt(default) channels="+channels+" slices=1 frames=1 display=Grayscale");
-			saveAs("Tiff", new_directory+"Worm"+j+".tif");
+			run("Duplicate...", "title=tmp duplicate channels=1-"+channels+" slices=1-"+slices+" frames="+i);	
+			saveAs("Tiff", new_directory+"Worms"+IJ.pad((i-1),4)+".tif");
 			close();
 		}
 		selectWindow(p_title);
 		close();
 }
+run("Close All");
+run("Quit");

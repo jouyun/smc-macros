@@ -4,10 +4,18 @@ peak3_channel=4;
 DAPI_channel=1;
 
 //Changed 20 to 10 09252013, J2 from 0805 bad
+//Changed for TIFF_20150202_1250screen
 SNR_worm=8;
-SNR_peaks1=100;
+SNR_peaks1=400;
 SNR_peaks2=200;
-SNR_peaks3=400;
+SNR_peaks3=200;
+
+//Changed for 20150202_1250radscreen_7dpi
+SNR_worm=8;
+SNR_peaks1=400;
+SNR_peaks2=200;
+SNR_peaks3=300;
+
 
 
 current_file=getArgument;
