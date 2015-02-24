@@ -14,11 +14,11 @@ for (n=0; n<source_list.length; n++)
 {
 	if (File.isDirectory(source_dir+source_list[n])==1)
 	{
-		tiff_dir=source_dir+source_list[n]+"Tiffs"+File.separator;
+		tiff_dir=source_dir+source_list[n]+"tiffs"+File.separator;
 		//worm_dir=source_dir+source_list[n]+"\\";
 		list=getFileList(tiff_dir);
-		runMacro("AwesomeMacro_Stacks.ijm", tiff_dir+list[2]);
-		saveAs("Tiff", source_dir+source_list[n]+"Fused.tif");
+		IJ.log(tiff_dir);
+		runMacro("AwesomeMacrov2.ijm", tiff_dir+list[2]);
 	}
 }
 run("Close All");

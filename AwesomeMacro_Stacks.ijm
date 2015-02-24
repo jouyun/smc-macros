@@ -75,7 +75,8 @@ else
 	run("Grid/Collection stitching", "type=[Grid: snake by rows] order=[Right & Down                ] grid_size_x="+width+" grid_size_y="+height+" tile_overlap=20 first_file_index_i=0 directory=["+tmp_dir+"] file_names=Tiffs{iiii}.tif output_textfile_name=TileConfiguration_1.registered.txt fusion_method=[Max. Intensity] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]");
 	
 }
-run("Delete Slice", "delete=channel");
+//run("Delete Slice", "delete=channel");
+return("");
 run("Convert PE Reference Stack", "number=4");
 
 Stack.getDimensions(width, height, channels, slices, frames);
