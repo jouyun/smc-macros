@@ -5,8 +5,8 @@ stitch_channel_blend="[Max. Intensity]";
 other_channel_blend="[Linear Blending]";
 other_channel_blend="[Max. Intensity]";
 
-x_dim=3;
-y_dim=3;
+x_dim=4;
+y_dim=4;
 name=getArgument;
 if (name=="")
 {

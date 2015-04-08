@@ -13,8 +13,8 @@ if (isOpen("Segmented"))
 	selectWindow("Segmented");
 	close();
 }
-base_folder="C:\\Data\\";
-//base_folder="/home/smc/fast/Data/";
+//base_folder="C:\\Data\\";
+base_folder="/home/smc/Data/SMC/StitchTest/Overview/";
 
 list=getFileList(base_folder);
 source_dir=base_folder+"Untitled_"+list.length+File.separator;

@@ -1,5 +1,5 @@
 peak_channel=1;
-DAPI_channel=3;
+DAPI_channel=1;
 
 //Changed 20 to 10 09252013, J2 from 0805 bad
 SNR_worm=10;

@@ -1,12 +1,12 @@
-channel_to_stitch_to=3;
+channel_to_stitch_to=2;
 other_channel=1;
 //stitch_channel_blend="[Linear Blending]";
 stitch_channel_blend="[Max. Intensity]";
 other_channel_blend="[Linear Blending]";
 other_channel_blend="[Max. Intensity]";
 
-x_dim=3;
-y_dim=3;
+x_dim=2;
+y_dim=2;
 name=getArgument;
 if (name=="")
 {

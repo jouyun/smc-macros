@@ -1,5 +1,5 @@
 SNR_worm=10;
-SNR_peaks=100;
+SNR_peaks=80;
 SNR_proto_slc=50;
 SNR_proto_cavII=300;
 minimum_proto_size=100;
@@ -11,9 +11,9 @@ dropoff_area_cavII=0.25;
 
 
 
-DAPI_channel=1;
-H3P_channel=3;
-slc_channel=4;
+DAPI_channel=3;
+H3P_channel=1;
+slc_channel=2;
 cavII_channel=2;
 
 
@@ -157,7 +157,9 @@ run("Subtract Background...", "rolling=50");
 run("Smooth");
 run("32-bit");
 run("Find Maxima...", "noise="+SNR_proto_cavII+" output=[Point Selection]");
+
 run("seeded multipoint adaptive region grow", "background=0 drop="+dropoff_count_cavII);
+return("");
 rename("PrePeaks");
 run("Analyze Particles...", "size="+minimum_proto_size+"-Infinity circularity=0.00-1.00 show=Masks display clear add");
 cavII_proto_count=nResults;

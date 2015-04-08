@@ -1,20 +1,13 @@
-peak1_channel=3;
-peak2_channel=4;
-peak3_channel=4;
-DAPI_channel=1;
-
-//Changed 20 to 10 09252013, J2 from 0805 bad
-//Changed for TIFF_20150202_1250screen
-SNR_worm=8;
-SNR_peaks1=400;
-SNR_peaks2=200;
-SNR_peaks3=200;
+peak1_channel=1;
+peak2_channel=1;
+peak3_channel=2;
+DAPI_channel=3;
 
 //Changed for 20150202_1250radscreen_7dpi
-SNR_worm=8;
-SNR_peaks1=800;
-SNR_peaks2=800;
-SNR_peaks3=100;
+SNR_worm=6;
+SNR_peaks1=50;
+SNR_peaks2=100;
+SNR_peaks3=50;
 
 
 
@@ -28,16 +21,18 @@ else
 {
      //current_file=name;
 }
-IJ.log(current_file);
+
 run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 open(current_file);
-//run("Slice Keeper", "first=1 last=64 increment=1");
 title=getTitle();
-run("Max Project With Reference", "channels=4 frames=1");
+
+run("Z Project...", "projection=[Max Intensity]");
+tt=getTitle();
 selectWindow(title);
 close();
-selectWindow("Img");
+selectWindow(tt);
 rename(title);
+
 setSlice(peak1_channel);
 run("Duplicate...", "title=Peaks1 channels="+peak1_channel);
 selectWindow(title);
@@ -69,7 +64,15 @@ selectWindow("Result");
 close();
 selectWindow("Mask");
 
+for (i=0; i<100; i++)
+{
+	run("Erode");
+}
+
 run("Analyze Particles...", "size=100000-Infinity circularity=0.00-1.00 show=Nothing display clear add");
+
+
+
 still_good=0;
 if (nResults>0) still_good=1;
 rename("Mask");
@@ -95,12 +98,10 @@ if (still_good>0)
      run("Measure");
      max=getResult("Max");
      min=getResult("Min");
-     
      run("Find Maxima...", "noise="+SNR_peaks1+" output=[Single Points]");
      run("Dilate");
      rename("Spots1");
      run("16-bit");
-     //return("");
    
 
      selectWindow("Peaks2");
@@ -172,7 +173,7 @@ if (still_good&&(width>1024||height>1024))
      //IJ.log(""+peak1_count+","+peak2_count+","+getResult("Area",2)+","+max+","+min+","+Dmax+","+Dmin);
      IJ.log(""+peak1_count+","+peak2_count+","+peak3_count +","+getResult("Area",2)+","+max+","+min+","+Dmax+","+Dmin);
      logs=getInfo("log");
-     saveAs("Tiff", current_file+"_"+SNR_peaks1+"_"+SNR_peaks2+"_mask.tif");
+     saveAs("Tiff", current_file+"_"+SNR_peaks1+"_mask.tif");
      close();
      return logs;
 }

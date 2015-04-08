@@ -125,7 +125,8 @@ else
 	close();
 }
 Stack.getDimensions(width, height, channels, slices, frames);
-if (still_good&&(width>1024||height>1024)) 
+//if (still_good&&(width>1024||height>1024)) 
+if (still_good) 
 {
 	print("\\Clear");
 	IJ.log(""+getResult("Count",3) +","+getResult("Area",2)+","+max+","+min+","+Dmax+","+Dmin);
