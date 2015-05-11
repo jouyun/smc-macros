@@ -25,8 +25,8 @@ for (n=0; n<source_list.length; n++)
 			if (endsWith(list[m],"mask.tif")==0&&endsWith(list[m],"composite.tif")==0&&endsWith(list[m],".xml")==0)
 			{
 				//logs=runMacro("ProcessSingleWormFindMaximaMultipleChannelsMaxProject.ijm", worm_dir+list[m]);
-				//logs=runMacro("ProcessSingleWormFindMaxima.ijm", worm_dir+list[m]);
-				logs=runMacro("Process_Fluorescent_Protonephridia_Wormv4.ijm", worm_dir+list[m]);
+				logs=runMacro("ProcessSingleWormFindMaximaMultipleChannels.ijm", worm_dir+list[m]);
+				//logs=runMacro("Process_Fluorescent_Protonephridia_Wormv4.ijm", worm_dir+list[m]);
 				comm=indexOf(logs,",");
 				if (comm!=-1)
 				{

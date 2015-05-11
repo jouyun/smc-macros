@@ -1,10 +1,13 @@
 
 channel_to_stitch_to=3;
 other_channel=1;
-stitch_channel_blend="[Linear Blending]";
-//stitch_channel_blend="[Max. Intensity]";
-other_channel_blend="[Linear Blending]";
-//other_channel_blend="[Max. Intensity]";
+//stitch_channel_blend="[Linear Blending]";
+stitch_channel_blend="[Max. Intensity]";
+//other_channel_blend="[Linear Blending]";
+other_channel_blend="[Max. Intensity]";
+order="Right & Down                ";
+order="Left & Up";
+pct_overlap=20;
 
 SNR=10;
 do_z_project=true;
@@ -122,6 +125,8 @@ for (m=0; m<list.length; m++)
           }
           Stack.getDimensions(width, height, channels, slices, frames);
           tt=getTitle();
+
+          //20 is good for coloc
           run("Paste Channel To Front", "channel="+channel_to_stitch_to+" slice=1");
           
           p_title=getTitle();
@@ -151,17 +156,19 @@ for (m=0; m<list.length; m++)
                     saveAs("Tiff", tmp_directory+"Stripe"+k+".tif");
                     close();
                }*/
-               run("Grid/Collection stitching", "type=[Grid: snake by rows] order=[Right & Down                ] grid_size_x="+x_dim+" grid_size_y="+y_dim+" tile_overlap=20 first_file_index_i="+((j-1)*x_dim*y_dim)+" directory=["+tmp_directory+"] file_names="+chan_title+"{iiii}.tif output_textfile_name=TileConfiguration_"+j+".txt fusion_method="+stitch_channel_blend+" regression_threshold=0.3 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]");
+               run("Grid/Collection stitching", "type=[Grid: snake by rows] order=["+order+"] grid_size_x="+x_dim+" grid_size_y="+y_dim+" tile_overlap="+pct_overlap+" first_file_index_i="+((j-1)*x_dim*y_dim)+" directory=["+tmp_directory+"] file_names="+chan_title+"{iiii}.tif output_textfile_name=TileConfiguration_"+j+".txt fusion_method="+stitch_channel_blend+" regression_threshold=0.3 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]");
                //Entering crazy town, now suddenly left and up
                //run("Grid/Collection stitching", "type=[Grid: snake by rows] order=[Left & Up] grid_size_x="+x_dim+" grid_size_y="+y_dim+" tile_overlap=20 first_file_index_i="+((j-1)*x_dim*y_dim)+" directory=["+tmp_directory+"] file_names="+chan_title+"{iiii}.tif output_textfile_name=TileConfiguration_"+j+".txt fusion_method="+stitch_channel_blend+" regression_threshold=0.3 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]");
                //run("Grid/Collection stitching", "type=[Grid: snake by rows] order=[Right & Down                ] grid_size_x="+1+" grid_size_y="+y_dim+" tile_overlap=20 first_file_index_i=0 directory=["+tmp_directory+"] file_names=Stripe{i}.tif output_textfile_name=TileConfiguration_"+j+".txt fusion_method="+stitch_channel_blend+" regression_threshold=0.3 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]");
-               if (getHeight<1500)
+               
+               
+               /*if (getHeight<1500)
                {
                     close();
                     middle_index=floor(y_dim/2);
                     open(tmp_directory+"Stripe"+middle_index+".tif");
                     IJ.log("bungled one");
-               }
+               }*/
                run("Delete Slice");
                run("Stack to Hyperstack...", "order=xyczt(default) channels="+(channels)+" slices="+slices+" frames="+1+" display=Grayscale");
                rename("Worm"+j+".tif");
@@ -171,7 +178,10 @@ for (m=0; m<list.length; m++)
           {
                selectWindow("Worm"+j+".tif");
                Stack.setSlice(slices);
+               //If acquired fast will have to delete an extra slice here
                //run("Delete Slice", "delete=slice");
+
+               //Cropping code, can be disabled
                run("Duplicate...", "duplicate channels="+channel_to_stitch_to+" slices=1");
                ttt=getTitle();
                run("32-bit");
@@ -186,6 +196,8 @@ for (m=0; m<list.length; m++)
                selectWindow("Worm"+j+".tif");
                roiManager("Select", 0);
                run("Crop");
+               //End cropping code
+               
                //run("Stack to Hyperstack...", "order=xyczt(default) channels="+channels+" slices=1 frames=1 display=Grayscale");
                saveAs("Tiff", new_directory+"Worm"+j+".tif");
                close();

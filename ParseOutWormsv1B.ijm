@@ -13,18 +13,35 @@ list = getFileList(source_dir);
 IJ.log(list[0]);
 for (m=0; m<list.length; m++) 
 {
-	file_path=source_dir+list[m]+File.separator;
+	file_path=source_dir+list[m];
 	if (File.isDirectory(file_path))
 	{
 		worm_directory=file_path+"Worms"+File.separator;
 		File.delete(worm_directory);
 		File.makeDirectory(worm_directory);
 		IJ.log(file_path);
-		open(file_path+"Fused.tif");
-	
+
+		sub_list=getFileList(file_path);
+		tile_file="";
+		for (n=0; n<sub_list.length; n++)
+		{
+			if (endsWith(sub_list[n],"ome.tiff"))
+			{
+				tile_file=file_path+sub_list[n]+File.separator;
+			}
+		}
+		IJ.log(tile_file);
+		open(tile_file);
+		t=getTitle();
+		run("Max Project With Reference", "channels=3 frames=1");
+		tt=getTitle();
+		selectWindow(t);
+		close();
+		selectWindow(tt);
+		rename(t);
+
 		run("32-bit");
-		selectWindow("Fused.tif");
-		run("Duplicate...", "duplicate channels=4 slices=1");
+		run("Duplicate...", "duplicate range="+1);
 		run("Percentile Threshold", "percentile=10 snr=30");
 		run("Fill Holes");
 		run("Open");
@@ -32,7 +49,7 @@ for (m=0; m<list.length; m++)
 		num=roiManager("count");
 		for (i=0; i<num; i++)
 		{
-			selectWindow("Fused.tif");
+			selectWindow(t);
 			roiManager("Select", i);
 			run("Duplicate...", "title=Worm"+(i+1)+".tif duplicate channels=1-4");
 			saveAs("Tiff", worm_directory+"Worm"+(i+1)+".tif");

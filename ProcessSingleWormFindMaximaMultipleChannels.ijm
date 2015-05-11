@@ -1,6 +1,6 @@
-peak1_channel=3;
-peak2_channel=4;
-peak3_channel=4;
+peak1_channel=2;
+peak2_channel=3;
+peak3_channel=3;
 DAPI_channel=1;
 
 //Changed 20 to 10 09252013, J2 from 0805 bad
@@ -16,6 +16,17 @@ SNR_peaks1=800;
 SNR_peaks2=800;
 SNR_peaks3=100;
 
+//Changed for LCC 20150406 Rapmycin
+SNR_worm=8;
+SNR_peaks1=50;
+SNR_peaks2=40;
+SNR_peaks3=25;
+
+//Changed for LCC 20150406 tor
+SNR_worm=8;
+SNR_peaks1=100;
+SNR_peaks2=80;
+SNR_peaks3=25;
 
 
 current_file=getArgument;
@@ -33,11 +44,11 @@ run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 open(current_file);
 //run("Slice Keeper", "first=1 last=64 increment=1");
 title=getTitle();
-run("Max Project With Reference", "channels=4 frames=1");
+/*run("Max Project With Reference", "channels=4 frames=1");
 selectWindow(title);
 close();
 selectWindow("Img");
-rename(title);
+rename(title);*/
 setSlice(peak1_channel);
 run("Duplicate...", "title=Peaks1 channels="+peak1_channel);
 selectWindow(title);
@@ -64,6 +75,10 @@ setAutoThreshold("Default dark");
 setThreshold(1, 10000);
 run("Convert to Mask");
 run("Fill Holes");
+for (i=0; i<10; i++)
+{
+	run("Erode");
+}
 rename("Mask");
 selectWindow("Result");
 close();
@@ -88,22 +103,28 @@ if (still_good>0)
      IJ.log("results:  "+nResults);
      still_good=1;
 
+	 
      selectWindow("Peaks1");
+     roiManager("Select", 0);
+     roiManager("Deselect");
      run("Smooth", "slice");
      roiManager("Deselect");
      roiManager("Select", 0);
      run("Measure");
      max=getResult("Max");
      min=getResult("Min");
-     
+
+     selectWindow("Peaks1");
      run("Find Maxima...", "noise="+SNR_peaks1+" output=[Single Points]");
      run("Dilate");
      rename("Spots1");
-     run("16-bit");
+     run("32-bit");
      //return("");
    
 
      selectWindow("Peaks2");
+     roiManager("Select", 0);
+     roiManager("Deselect");
      run("Smooth", "slice");
      roiManager("Deselect");
      roiManager("Select", 0);
@@ -113,9 +134,11 @@ if (still_good>0)
      run("Find Maxima...", "noise="+SNR_peaks2+" output=[Single Points]");
      run("Dilate");
      rename("Spots2");
-     run("16-bit");
+     run("32-bit");
 
      selectWindow("Peaks3");
+     roiManager("Select", 0);
+     roiManager("Deselect");
      run("Smooth", "slice");
      roiManager("Deselect");
      roiManager("Select", 0);
@@ -125,10 +148,10 @@ if (still_good>0)
      run("Find Maxima...", "noise="+SNR_peaks3+" output=[Single Points]");
      run("Dilate");
      rename("Spots3");
-     run("16-bit");
+     run("32-bit");
 
      selectWindow("Mask");
-     run("16-bit");
+     run("32-bit");
      //run("Concatenate...", "  title=[Concatenated Stacks] image1=Mask image2=Peaks1 image3=Spots1 image4=Peaks2 image5=Spots2 image6=[-- None --]");
      run("Concatenate...", "  title=[Concatenated Stacks] image1=Mask image2=Peaks1 image3=Spots1 image4=Peaks2 image5=Spots2 image6=Peaks3 image7=Spots3 image8=[-- None --]");
 
