@@ -1,9 +1,9 @@
 peak_channel=1;
-DAPI_channel=1;
+DAPI_channel=3;
 
 //Changed 20 to 10 09252013, J2 from 0805 bad
 SNR_worm=10;
-SNR_peaks=100;
+SNR_peaks=400;
 //08052013 Hanh did 120, she said she wanted to avoid the dimmer spots so switched to 700
 
 
@@ -20,15 +20,16 @@ else
 
 run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 open(current_file);
+run("Select All");
 
 title=getTitle();
 
-run("Z Project...", "projection=[Max Intensity]");
+/*run("Z Project...", "projection=[Max Intensity]");
 tt=getTitle();
 selectWindow(title);
 close();
 selectWindow(tt);
-rename(title);
+rename(title);*/
 
 setSlice(peak_channel);
 run("Duplicate...", "title=Peaks channels="+peak_channel);
@@ -69,6 +70,10 @@ close();
 selectWindow("Result");
 run("Fill Holes");
 run("Open");
+for (i=0; i<0; i++)
+{
+	run("Erode");
+}
 run("Analyze Particles...", "size=100000-Infinity circularity=0.00-1.00 show=[Count Masks] display clear add");
 rename("duh");
 run("Mask Largest");

@@ -50,13 +50,26 @@ if (File.exists(source_dir)) {
 
 		last_idx=getImageID();
 		
-		for (j=orig_idx-1; j>last_idx-1; j--)
+		/*for (j=orig_idx-1; j>last_idx-1; j--)
 		{
    			selectImage(j);
    			current_title=getTitle();
    			//run("AVI... ", "compression=Uncompressed frame=15 save=[C:\\Data\\AMM\\First Real Data\\tmp\\"+current_title+".avi]");
    			run("AVI... ", "compression=Uncompressed frame=15 save=["+file_output_path+current_title+".avi]");
    			close();
+		}*/
+		names=newArray(nImages);
+		ids=newArray(nImages);
+		for (j=0; j<ids.length-1; j++)
+		{
+			//if (isOpen(i+1))
+			{
+				selectImage(2);
+				current_title=getTitle();
+   				run("AVI... ", "compression=Uncompressed frame=15 save=["+file_output_path+current_title+".avi]");
+   				close();
+			}
+
 		}
 		selectWindow("Log");
 		saveAs("Text", file_output_path+"Log.txt");

@@ -14,13 +14,22 @@ if (isOpen("Segmented"))
 	close();
 }
 //base_folder="C:\\Data\\";
-base_folder="/home/smc/Data/SMC/DLL_Test/";
-
-list=getFileList(base_folder);
+base_folder="U:\\smc\\public\\SMC\\DLL_Test\\";
+list=getFileList(base_folder);
 source_dir=base_folder+"Untitled_"+list.length+File.separator;
-IJ.log(source_dir);
 sub_list=getFileList(source_dir);
-run("Grid/Collection stitching", "type=[Positions from file] order=[Defined by image metadata] multi_series_file="+source_dir+sub_list[0]+" fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 increase_overlap=0 invert_x invert_y computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]");
+good_idx=0;
+for (n=0; n<sub_list.length; n++)
+{
+	if (indexOf(sub_list[n], "000_000")>0) 
+	{
+		good_idx=n;
+	}
+}
+
+IJ.log(source_dir+sub_list[good_idx]);
+
+run("Grid/Collection stitching", "type=[Positions from file] order=[Defined by image metadata] multi_series_file="+source_dir+sub_list[good_idx]+" fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 increase_overlap=0 invert_x invert_y computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]");
 //run("Grid/Collection stitching", "type=[Positions from file] order=[Defined by image metadata] multi_series_file="+"C:\\Data\\Untitled_44\\Untitled_44_MMStack_Pos0.ome.tif"+" fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 increase_overlap=0 invert_x invert_y computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]");
 
 run("Flip Horizontally");
@@ -181,5 +190,5 @@ for (i=0; i<num; i++)
 	makeRectangle(floor(x), floor(y), floor(small_pixels_per_big_pixel), floor(small_pixels_per_big_pixel));
 	roiManager("Add");
 }
-saveAs("Results", "/n/projects/smc/public/SMC/DLL_Test/Results.csv");
-
+saveAs("Results", base_folder+"Results.csv");
+run("Quit");

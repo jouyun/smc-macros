@@ -1,6 +1,6 @@
 peak1_channel=2;
-peak2_channel=3;
-peak3_channel=3;
+peak2_channel=2;
+peak3_channel=2;
 DAPI_channel=1;
 
 //Changed 20 to 10 09252013, J2 from 0805 bad
@@ -24,10 +24,57 @@ SNR_peaks3=25;
 
 //Changed for LCC 20150406 tor
 SNR_worm=8;
-SNR_peaks1=100;
-SNR_peaks2=80;
-SNR_peaks3=25;
+SNR_peaks1=30;
+SNR_peaks2=100;
+SNR_peaks3=100;
 
+//Changed for KLE 20150502 tor
+/*SNR_worm=8;
+SNR_peaks1=100;
+SNR_peaks2=400;
+SNR_peaks3=200;*/
+
+//Changed for KLE 20150508 tor
+/*SNR_worm=6;
+SNR_peaks1=150;
+SNR_peaks2=180;
+SNR_peaks3=400;*/
+
+//Kai 20150622_Homeostasis
+SNR_worm=8;
+SNR_peaks1=100;
+SNR_peaks2=200;
+SNR_peaks3=300;
+
+//Kai 20150622_Egfr3
+SNR_worm=20;
+SNR_peaks1=75;
+SNR_peaks2=150;
+SNR_peaks3=500;
+
+//Kai 20150709_Egfr3
+SNR_worm=10;
+SNR_peaks1=400;
+SNR_peaks2=900;
+SNR_peaks3=1200;
+
+//CPA 08172015
+SNR_worm=8;
+SNR_peaks1=400;
+SNR_peaks2=100;
+SNR_peaks3=1200;
+
+//Kai TIFF_20151005_egfr3RNAseqHomeostasis
+SNR_worm=8;
+SNR_peaks1=100;
+SNR_peaks2=100;
+SNR_peaks3=1000;
+
+//Kai TIFF_20151005_nrg7_2i_1250rads
+SNR_worm=8;
+SNR_peaks1=100;
+SNR_peaks2=400;
+SNR_peaks3=1000;
 
 current_file=getArgument;
 
@@ -42,21 +89,27 @@ else
 IJ.log(current_file);
 run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 open(current_file);
+
 //run("Slice Keeper", "first=1 last=64 increment=1");
 title=getTitle();
-/*run("Max Project With Reference", "channels=4 frames=1");
+
+run("Max Project With Reference", "channels=3 frames=1");
 selectWindow(title);
 close();
 selectWindow("Img");
-rename(title);*/
+rename(title);
+
 setSlice(peak1_channel);
 run("Duplicate...", "title=Peaks1 channels="+peak1_channel);
+run("32-bit");
 selectWindow(title);
 setSlice(peak2_channel);
 run("Duplicate...", "title=Peaks2 channels="+peak2_channel);
+run("32-bit");
 selectWindow(title);
 setSlice(peak3_channel);
 run("Duplicate...", "title=Peaks3 channels="+peak3_channel);
+run("32-bit");
 selectWindow(title);
 setSlice(DAPI_channel);
 run("Duplicate...", "title=DAPI channels="+DAPI_channel);
@@ -70,7 +123,7 @@ run("Fill Holes");
 run("Open");
 run("Analyze Particles...", "size=100000-Infinity circularity=0.00-1.00 show=[Count Masks] display clear add");
 rename("duh");
-run("Mask Largest");
+run("Mask Middle");
 setAutoThreshold("Default dark");
 setThreshold(1, 10000);
 run("Convert to Mask");
@@ -195,7 +248,7 @@ if (still_good&&(width>1024||height>1024))
      //IJ.log(""+peak1_count+","+peak2_count+","+getResult("Area",2)+","+max+","+min+","+Dmax+","+Dmin);
      IJ.log(""+peak1_count+","+peak2_count+","+peak3_count +","+getResult("Area",2)+","+max+","+min+","+Dmax+","+Dmin);
      logs=getInfo("log");
-     saveAs("Tiff", current_file+"_"+SNR_peaks1+"_"+SNR_peaks2+"_mask.tif");
+     saveAs("Tiff", current_file+"_"+SNR_peaks1+"_"+SNR_peaks2+"_"+SNR_peaks3+"_mask.tif");
      close();
      return logs;
 }

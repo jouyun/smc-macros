@@ -1,20 +1,18 @@
 SNR_worm=10;
-SNR_peaks=40;
-SNR_proto_slc=50;
+SNR_peaks=100;
+SNR_proto_slc=100;
 SNR_proto_cavII=300;
-minimum_proto_size=50;
+minimum_proto_size=100;
 minimum_worm_size=100000;
-dropoff_count_slc=0.4;
-dropoff_area_slc=0.3;
-dropoff_count_cavII=0.4;
+dropoff_count_slc=0.45;
+dropoff_area_slc=0.4;
+dropoff_count_cavII=0.25;
 dropoff_area_cavII=0.25;
 
-
-
-DAPI_channel=3;
-H3P_channel=1;
-slc_channel=2;
-cavII_channel=2;
+DAPI_channel=1;
+H3P_channel=2;
+slc_channel=3;
+cavII_channel=4;
 
 
 setBatchMode(true);
@@ -33,6 +31,13 @@ else
 
 run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 open(current_file);
+
+ttt=getTitle();
+run("Max Project With Reference", "channels=4 frames=1");
+selectWindow(ttt);
+close();
+selectWindow("Img");
+rename(ttt);
 
 title=getTitle();
 

@@ -22,7 +22,7 @@ for (n=0; n<source_list.length; n++)
 		for (m=0; m<list.length; m++) 
 		{
 			setBatchMode(true);
-			if (endsWith(list[m],"mask.tif")==0&&(endsWith(list[m],".tif")||endsWith(list[m],"ome.tiff")))
+			if (endsWith(list[m],"mask.tif")==0&&(endsWith(list[m],".tif")||endsWith(list[m],"tif")))
 			{
 				logs=runMacro("ProcessSingleWormFindMaximaMultipleChannels.ijm", worm_dir+list[m]);
 				//logs=runMacro("Process_Fluorescent_Protonephridia_Wormv4.ijm", worm_dir+list[m]);

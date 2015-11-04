@@ -1,4 +1,3 @@
-title=getTitle();
 name=getArgument;
 setBatchMode(true);
 if (name=="")
