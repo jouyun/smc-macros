@@ -24,11 +24,19 @@ for (n=0; n<source_list.length; n++)
 			
 			
 			IJ.log(worm_dir+list[m]);
-			if (endsWith(list[m],"aligned.tif")==0&&endsWith(list[m], ".tif")==1)
+			if (endsWith(list[m],"aligned.tif")==0)
 			{
-				runMacro("Align_3D_Worms.ijm", worm_dir+list[m]);
+				current_file=worm_dir+list[m];
+				open(current_file);
+				t=getTitle();
+				run("Profile Z Information", " ");
+				slide=File.getName(File.getParent(File.getParent(current_file)));
+				rename(slide+"_"+File.getName(current_file));
+				selectWindow(t);
+				close();
 			}
-			run("Close All");
 		}
 	}
 }
+
+

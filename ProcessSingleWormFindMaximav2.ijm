@@ -1,9 +1,9 @@
-peak_channel=1;
-DAPI_channel=3;
+peak_channel=2;
+DAPI_channel=1;
 
 //Changed 20 to 10 09252013, J2 from 0805 bad
-SNR_worm=10;
-SNR_peaks=400;
+SNR_worm=4;
+SNR_peaks=40;
 //08052013 Hanh did 120, she said she wanted to avoid the dimmer spots so switched to 700
 
 
@@ -63,7 +63,7 @@ selectWindow(title);
 close();*/
 
 run("32-bit");
-run("Percentile Threshold", "percentile=10 snr="+SNR_worm);
+run("Percentile Threshold", "percentile=30 snr="+SNR_worm);
 
 selectWindow(title);
 close();
@@ -76,7 +76,8 @@ for (i=0; i<0; i++)
 }
 run("Analyze Particles...", "size=100000-Infinity circularity=0.00-1.00 show=[Count Masks] display clear add");
 rename("duh");
-run("Mask Largest");
+//run("Mask Largest");
+run("Mask Middle");
 setAutoThreshold("Default dark");
 setThreshold(1, 10000);
 run("Convert to Mask");

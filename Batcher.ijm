@@ -12,24 +12,45 @@ source_list = getFileList(source_dir);
 for (n=0; n<source_list.length; n++)
 {
 	fname=source_dir+source_list[n];
-	if (endsWith(fname, ".tif"))
+	if (endsWith(fname, ".zvi"))
 	{
 		IJ.log(fname);
-		open(fname);
-		//runMacro("Process_ZYU_EM_Data.ijm");
+		//open(fname);
+		//runMacro("ProcessWidefieldFRETv2.ijm");
 
-/*setSlice(1);		
-run("Blue");
-run("Enhance Contrast", "saturated=0.35");
-setSlice(2);		
-run("Green");
-run("Enhance Contrast", "saturated=0.35");
-setSlice(3);		
-run("Red");
-run("Enhance Contrast", "saturated=0.35");*/
-run("Scale...", "x=.5 y=.5 z=1.0 width=6966 height=8168 depth=3 interpolation=Bilinear average create title=Detitled_611-3.tif");
+run("Bio-Formats Importer", "open="+fname+" color_mode=Default view=Hyperstack stack_order=XYCZT");
+t=getTitle();
+call("ij.ImagePlus.setDefault16bitRange", 16);
+//run("Brightness/Contrast...");
+run("Invert");
+setSlice(1);
+run("Duplicate...", "title=A duplicate channels=1");
+run("32-bit");
+run("Percentile Threshold", "percentile=10 snr=20");
+run("Analyze Particles...", "  show=[Count Masks]");
+tt=getTitle();
+run("Mask Largest");
+//run("Threshold...");
+setAutoThreshold("Default dark");
+setOption("BlackBackground", true);
+run("Convert to Mask");
+run("Analyze Particles...", "add");
+Res=roiManager("Count");
+selectWindow(tt);
+close();
+selectWindow("A");
+close();
+selectWindow("Result");
+close();
+selectWindow(t);
+run("Subtract Background...", "rolling=500");
+roiManager("Select", Res-1);
+run("Measure");
+
+
 		
-		saveAs("Tiff", fname);
-		close();
+		//saveAs("Tiff", fname);
+		//close();
+		run("Close All");
 	}
 }

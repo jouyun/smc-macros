@@ -1,19 +1,19 @@
 
 channel_to_stitch_to=2;
 other_channel=1;
-//stitch_channel_blend="[Linear Blending]";
-stitch_channel_blend="[Max. Intensity]";
-//other_channel_blend="[Linear Blending]";
-other_channel_blend="[Max. Intensity]";
+stitch_channel_blend="[Linear Blending]";
+//stitch_channel_blend="[Max. Intensity]";
+other_channel_blend="[Linear Blending]";
+//other_channel_blend="[Max. Intensity]";
 order="Right & Down                ";
 //order="Left & Up";
 pct_overlap=20;
 
 SNR=10;
-do_z_project=false;
+do_z_project=true;
 
-x_dim=5;
-y_dim=5;
+x_dim=2;
+y_dim=2;
 name=getArgument;
 if (name=="")
 {
@@ -24,12 +24,12 @@ else
      source_dir=name;
 }
 IJ.log(source_dir);
-//setBatchMode(false);
+setBatchMode(true);
 list = getFileList(source_dir);
 IJ.log(list[0]);
 for (m=0; m<list.length; m++)
 {
-          setBatchMode(false);
+          setBatchMode(true);
           idx=lengthOf(list[m])-1;
           list[m]=substring(list[m],0,idx);
           file_path=source_dir+list[m]+File.separator;
@@ -70,6 +70,7 @@ for (m=0; m<list.length; m++)
           close();
           selectWindow(p_title);         
           new_directory=file_path+"Worms"+File.separator;
+          tmp_directory=file_path+"tmp"+File.separator;
           IJ.log(new_directory);
           File.makeDirectory(new_directory);
           File.makeDirectory(tmp_directory);
