@@ -1,68 +1,7 @@
-peak1_channel=2;
+peak1_channel=1;
 peak2_channel=2;
-peak3_channel=2;
-DAPI_channel=1;
-
-//Changed 20 to 10 09252013, J2 from 0805 bad
-//Changed for TIFF_20150202_1250screen
-SNR_worm=8;
-SNR_peaks1=400;
-SNR_peaks2=200;
-SNR_peaks3=200;
-
-//Changed for 20150202_1250radscreen_7dpi
-SNR_worm=8;
-SNR_peaks1=800;
-SNR_peaks2=800;
-SNR_peaks3=100;
-
-//Changed for LCC 20150406 Rapmycin
-SNR_worm=8;
-SNR_peaks1=50;
-SNR_peaks2=40;
-SNR_peaks3=25;
-
-//Changed for LCC 20150406 tor
-SNR_worm=8;
-SNR_peaks1=30;
-SNR_peaks2=100;
-SNR_peaks3=100;
-
-//Changed for KLE 20150502 tor
-/*SNR_worm=8;
-SNR_peaks1=100;
-SNR_peaks2=400;
-SNR_peaks3=200;*/
-
-//Changed for KLE 20150508 tor
-/*SNR_worm=6;
-SNR_peaks1=150;
-SNR_peaks2=180;
-SNR_peaks3=400;*/
-
-//Kai 20150622_Homeostasis
-SNR_worm=8;
-SNR_peaks1=100;
-SNR_peaks2=200;
-SNR_peaks3=300;
-
-//Kai 20150622_Egfr3
-SNR_worm=20;
-SNR_peaks1=75;
-SNR_peaks2=150;
-SNR_peaks3=500;
-
-//Kai 20150709_Egfr3
-SNR_worm=10;
-SNR_peaks1=400;
-SNR_peaks2=900;
-SNR_peaks3=1200;
-
-//CPA 08172015
-SNR_worm=8;
-SNR_peaks1=400;
-SNR_peaks2=100;
-SNR_peaks3=1200;
+peak3_channel=3;
+DAPI_channel=3;
 
 //Kai TIFF_20151005_egfr3RNAseqHomeostasis
 SNR_worm=8;
@@ -75,6 +14,12 @@ SNR_worm=8;
 SNR_peaks1=100;
 SNR_peaks2=400;
 SNR_peaks3=1000;
+
+//CPA 20160321
+SNR_worm=8;
+SNR_peaks1=400;
+SNR_peaks2=100;
+SNR_peaks3=0401;
 
 current_file=getArgument;
 
@@ -93,11 +38,11 @@ open(current_file);
 //run("Slice Keeper", "first=1 last=64 increment=1");
 title=getTitle();
 
-run("Max Project With Reference", "channels=3 frames=1");
+/*run("Max Project With Reference", "channels=4 frames=1");
 selectWindow(title);
 close();
 selectWindow("Img");
-rename(title);
+rename(title);*/
 
 setSlice(peak1_channel);
 run("Duplicate...", "title=Peaks1 channels="+peak1_channel);

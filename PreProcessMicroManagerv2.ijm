@@ -14,11 +14,11 @@ if (isOpen("Segmented"))
 	close();
 }
 //base_folder="C:\\Data\\";
-base_folder="/home/smc/Data/SMC/DLL_Test/";
+base_folder="/home/smc/Data/SMC/FinderTest/";
 
 list=getFileList(base_folder);
 source_dir=base_folder+"Untitled_"+list.length+File.separator;
-IJ.log(source_dir);
+//IJ.log(source_dir);
 sub_list=getFileList(source_dir);
 run("Grid/Collection stitching", "type=[Positions from file] order=[Defined by image metadata] multi_series_file="+source_dir+sub_list[0]+" fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 increase_overlap=0 invert_x invert_y computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]");
 //run("Grid/Collection stitching", "type=[Positions from file] order=[Defined by image metadata] multi_series_file="+"C:\\Data\\Untitled_44\\Untitled_44_MMStack_Pos0.ome.tif"+" fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 increase_overlap=0 invert_x invert_y computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]");
@@ -28,7 +28,7 @@ run("Flip Vertically");
 run("32-bit");
 
 //Segmentation code, can separate this out into own macro in future
-run("Percentile Threshold", "percentile=10 snr=20");
+run("Percentile Threshold", "percentile=10 snr=8");
 setOption("BlackBackground", true);
 run("Dilate");
 //run("Analyze Particles...", "size=10000-Infinity show=Masks display exclude clear add");
@@ -54,7 +54,7 @@ for (i=0; i<number_results; i++)
 	//should probably multiply by starting_pix_size
 	x_array[i]=(getResult("BX",i))*starting_pix_size;
 	y_array[i]=(getResult("BY",i))*starting_pix_size;
-	IJ.log("X,Y: "+x_array[i]+","+y_array[i]);
+	//IJ.log("X,Y: "+x_array[i]+","+y_array[i]);
 }
 run("Clear Results");
 ctr=0;
@@ -70,9 +70,9 @@ for (i=0; i<number_results; i++)
 	close();
 	selectWindow("A");
 	scale=final_mag/starting_mag/frame_size/(1-overlap/100);
-	IJ.log("Scale: "+scale);
+	//IJ.log("Scale: "+scale);
 	big_pixel_size=frame_size*(1-overlap/100)*starting_pix_size*starting_mag/final_mag;
-	IJ.log("Big pixel_size: "+big_pixel_size);
+	//IJ.log("Big pixel_size: "+big_pixel_size);
 	getDimensions(width, height, channels, slices, frames);
 	small_pixels_per_big_pixel=1/scale;
 	x_blocks=floor(width/small_pixels_per_big_pixel)+2;
@@ -83,7 +83,7 @@ for (i=0; i<number_results; i++)
 	maxer=0;
 	x_max=0;
 	y_max=0;
-	IJ.log("maxes: "+x_blocks+","+y_blocks);
+	//IJ.log("maxes: "+x_blocks+","+y_blocks);
 
 	//Find max spots, remove it and the window around	
 	run("Duplicate...", "title=C");
@@ -103,11 +103,11 @@ for (i=0; i<number_results; i++)
 					x_max=x;
 					y_max=y;
 					maxer=mean;
-					IJ.log("New max: "+x_max+","+y_max+","+mean);
+					//IJ.log("New max: "+x_max+","+y_max+","+mean);
 				}
 			}
 		}
-		IJ.log("Maxer: "+maxer);
+		//IJ.log("Maxer: "+maxer);
 		if (!first_pass&&(maxer<auto_threshold))
 		{
 			flag=false;
@@ -119,7 +119,8 @@ for (i=0; i<number_results; i++)
 		setResult("X",ctr,x_array[i]+(x_max+0.5+random/3)*big_pixel_size);
 		setResult("Y",ctr,y_array[i]+(y_max+0.5+random/3)*big_pixel_size);
 		ctr++;
-		IJ.log("Ctr: "+ctr);
+		return("");
+		//IJ.log("Ctr: "+ctr);
 		//Now clear out the area around it
 		for (x=-2; x<3; x++)
 		{
@@ -165,9 +166,9 @@ run("Properties...", "channels=1 slices=1 frames=1 unit=�m pixel_width=2.4747 
 //Useful helper function for viewing the tiles
 overlap=0;
 scale=final_mag/starting_mag/frame_size/(1-overlap/100);
-	IJ.log("Scale: "+scale);
+	//IJ.log("Scale: "+scale);
 	big_pixel_size=frame_size*(1-overlap/100)*starting_pix_size*starting_mag/final_mag;
-	IJ.log("Big pixel_size: "+big_pixel_size);
+	//IJ.log("Big pixel_size: "+big_pixel_size);
 	getDimensions(width, height, channels, slices, frames);
 	small_pixels_per_big_pixel=1/scale;
 

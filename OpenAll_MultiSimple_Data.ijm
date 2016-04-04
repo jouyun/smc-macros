@@ -3,10 +3,10 @@ source_dir = getDirectory("Source Directory");
 list = getFileList(source_dir);
 IJ.log(list[0]);
 for (m=0; m<list.length; m++) {
-	sub_list=getFileList(source_dir+"\\"+list[m]);
+	sub_list=getFileList(source_dir+File.separator+list[m]);
 	IJ.log(sub_list.length);
 
-	current_file=source_dir+"\\"+list[m]+"\\"+sub_list[0];
+	current_file=source_dir+File.separator+list[m]+File.separator+sub_list[0];
 	IJ.log(current_file);
 	for (i=0; i<6; i++)
 	{
@@ -30,8 +30,8 @@ for (m=0; m<list.length; m++) {
 	if (slices>1||channels>1) stk=true;
 	else stk=false;
 	if (hyper) run("Hyperstack to Stack");
-	//for (j=1;j<sub_list.length-1; j++)
-	for (j=1;j<500; j++)
+	for (j=1;j<sub_list.length-1; j++)
+	//for (j=1;j<500; j++)
 	{
 		//open(source_dir+"\\"+list[m]+"\\"+sub_list[j]);
 		open(base_file+(j+1)+".lsm");

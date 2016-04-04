@@ -16,13 +16,14 @@ for (n=0; n<source_list.length; n++)
 {
 	if (File.isDirectory(source_dir+source_list[n])==1)
 	{
-		worm_dir=source_dir+source_list[n]+"\\";
+		worm_dir=source_dir+source_list[n]+"Worms"+File.separator;
 		list=getFileList(worm_dir);
 		for (m=0; m<list.length; m++) 
 		{
 			setBatchMode(true);
-			if (endsWith(list[m],"mask.tif")==0&&endsWith(list[m],"composite.tif")==0&&endsWith(list[m],".xml")==0)
+			if (endsWith(list[m],"mask.tif")==0&&endsWith(list[m],"composite.tif")==0&&endsWith(list[m],".xml")==0/*&&endsWith(list[m],"projected.tif")*/)
 			{
+				//logs=runMacro("ProjectSingleWorm.ijm", worm_dir+list[m]);
 				logs=runMacro("ProcessSingleWormFindMaximaMultipleChannels.ijm", worm_dir+list[m]);
 				//logs=runMacro("ProcessSingleWormFindMaximav2.ijm", worm_dir+list[m]);
 				//logs=runMacro("Process_Fluorescent_Protonephridia_Wormv4.ijm", worm_dir+list[m]);
