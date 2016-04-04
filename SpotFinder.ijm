@@ -1,6 +1,6 @@
 run("Duplicate...", "title=Base duplicate");
 run("32-bit");
-s=18;
+s=3;
 sz=s/2;
 run("LoG 3D", "sigmax="+s+" sigmay="+s+" sigmaz="+sz+" displaykernel=0 volume=1");
 while (isOpen("LoG of Base")==false)

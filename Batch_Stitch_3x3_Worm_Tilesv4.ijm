@@ -12,8 +12,8 @@ pct_overlap=20;
 SNR=10;
 do_z_project=true;
 
-x_dim=1;
-y_dim=1;
+x_dim=2;
+y_dim=2;
 name=getArgument;
 if (name=="")
 {
@@ -24,12 +24,16 @@ else
      source_dir=name;
 }
 IJ.log(source_dir);
+<<<<<<< HEAD
 setBatchMode(false);
+=======
+setBatchMode(true);
+>>>>>>> 60e148cad74717762f0afee63ed33abdb2e451cd
 list = getFileList(source_dir);
 IJ.log(list[0]);
 for (m=0; m<list.length; m++)
 {
-          setBatchMode(false);
+          setBatchMode(true);
           idx=lengthOf(list[m])-1;
           list[m]=substring(list[m],0,idx);
           file_path=source_dir+list[m]+File.separator;
