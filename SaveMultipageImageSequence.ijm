@@ -12,7 +12,8 @@ Stack.getDimensions(width, height, channels, slices, frames);
 for (i=1; i<=frames; i++)
 {
 	run("Duplicate...", "title=tmp duplicate channels=1-"+channels+" slices=1-"+slices+" frames="+i);	
-	saveAs("Tiff", source_dir+"Tiffs"+IJ.pad((i-1),4)+".tif");
+	//saveAs("Tiff", source_dir+"Tiffs"+IJ.pad((i-1),4)+".tif");
+	run("Save As Tiff", "save=["+source_dir+"Tiffs"+IJ.pad((i-1),4)+".tif]");
 	close();
 }
 

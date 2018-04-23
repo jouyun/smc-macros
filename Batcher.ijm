@@ -7,50 +7,35 @@ else
 {
 	source_dir=name;
 }
-setBatchMode(true);
+setBatchMode(false);
 source_list = getFileList(source_dir);
 for (n=0; n<source_list.length; n++)
 {
 	fname=source_dir+source_list[n];
-	if (endsWith(fname, ".zvi"))
+	//run("Bio-Formats Importer", "open=["+fname+"] autoscale color_mode=Default rois_import=[ROI manager] view=Hyperstack stack_order=XYCZT");
+	//saveAs("Tiff", File.getParent(source_dir)+File.separator+File.getName(source_dir)+"_Tiff"+File.separator+File.getName(fname)+".tif");
+
+	//if (!endsWith(fname, "01.tif")&!endsWith(fname, "_processed.tif")&!endsWith(fname, "projection.tif")&!endsWith(fname, "mask.tif")&endsWith(fname, ".tif")&!endsWith(fname, "backsub.tif")&!endsWith(fname,"unthreshed.tif"))
+	if (endsWith(fname, "p.tif"))
+	//if (!File.exists(fname+"_backgroundp.tif"))
 	{
 		IJ.log(fname);
-		//open(fname);
-		//runMacro("ProcessWidefieldFRETv2.ijm");
-
-run("Bio-Formats Importer", "open="+fname+" color_mode=Default view=Hyperstack stack_order=XYCZT");
-t=getTitle();
-call("ij.ImagePlus.setDefault16bitRange", 16);
-//run("Brightness/Contrast...");
-run("Invert");
-setSlice(1);
-run("Duplicate...", "title=A duplicate channels=1");
-run("32-bit");
-run("Percentile Threshold", "percentile=10 snr=20");
-run("Analyze Particles...", "  show=[Count Masks]");
-tt=getTitle();
-run("Mask Largest");
-//run("Threshold...");
-setAutoThreshold("Default dark");
-setOption("BlackBackground", true);
-run("Convert to Mask");
-run("Analyze Particles...", "add");
-Res=roiManager("Count");
-selectWindow(tt);
-close();
-selectWindow("A");
-close();
-selectWindow("Result");
-close();
-selectWindow(t);
-run("Subtract Background...", "rolling=500");
-roiManager("Select", Res-1);
-run("Measure");
-
-
 		
-		//saveAs("Tiff", fname);
-		//close();
+		run("Bio-Formats Importer", "open=["+fname+"] autoscale color_mode=Default rois_import=[ROI manager] view=Hyperstack stack_order=XYCZT");
+		//open(fname);
+		//if (File.exists(fname+".zip"))
+		{
+			//open(fname+".zip");
+			runMacro("U:\\smc\\Fiji_2016.app\\macros\\CYC_ManuallyFindClusters.ijm", source_dir);
+			//runMacro("/home/smc/Fiji.app/macros/CYC_ManuallyFindClusters.ijm", source_dir);
+			//runMacro("/home/smc/Fiji.app/macros/AHK_ProcessStellaWells.ijm");
+			//saveAs("Results", fname+"_Results.csv");
+			//run("Clear Results");
+			
+			//saveAs("Tiff", fname+"_processed.tif");
+			//run("Save As Tiff", "save="+fname+"_BackSub.tif"+" imp="+getTitle());
+		}
 		run("Close All");
 	}
+	//close();
 }

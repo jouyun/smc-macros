@@ -47,7 +47,7 @@ for (n=0; n<source_list.length; n++)
 		IJ.log(fname);
 		run("Bio-Formats Importer", "open=["+fname+"] color_mode=Default view=Hyperstack stack_order=XYCZT");
 		getPixelSize(unit, pw, ph, pd);
-		//run("Flip Horizontally");
+		run("Flip Horizontally");
 		run("Flip Vertically");
 
 		//Get out the X/Y positions of the center
@@ -87,7 +87,7 @@ run("Grid/Collection stitching", "type=[Positions from file] order=[Defined by T
 //run("Flip Vertically");
 //return("");
 //*******************BLOCK 2:  Segment******************/
-runMacro("SegmentKristinRobot.ijm");
+runMacro("SegmentRobot.ijm");
 
 //*******************BLOCK 3:  Create point list of areas to go back to, dump to file/directory******************/
 
@@ -95,7 +95,7 @@ runMacro("SegmentKristinRobot.ijm");
 top_left_x=minX-width/2*starting_pix_size;
 top_left_y=minY-height/2*starting_pix_size;
 starting_mag=4;
-final_mag=60;
+final_mag=10;
 overlap=20;
 frame_size=2048;
 pixel_threshold=0;
@@ -103,12 +103,12 @@ pixel_threshold=0;
 x_correction=233;
 y_correction=-366;
 //20X corrections
-x_correction=233;
-y_correction=-366-75-77;
+//x_correction=233;
+//y_correction=-366-75-77;
 
 //60X corrections
-x_correction=468;
-y_correction=-650;
+//x_correction=468;
+//y_correction=-650;
 
 
 IJ.log("Top left: "+top_left_x+","+top_left_y);
@@ -162,7 +162,7 @@ for (i=0; i<number_results; i++)
 	first_pass=true;
 	
 	//pixel_config_file=object_directory+"PixelConfig.csv";
-	stage_config_file=source_dir+"Plate"+IJ.pad(plate,3)+"_Well"+well+"_Object"+(i+1)+"_StageConfig.csv";
+	stage_config_file=source_dir+"Plate"+IJ.pad(plate,3)+"_Well"+well+"_Object"+(i)+"_StageConfig.csv";
 	
 	//File.open(stage_config_file);
 	selectWindow("C");
@@ -263,5 +263,5 @@ for (i=0; i<num; i++)
 	roiManager("Add");
 }
 
-//run("Quit");
+run("Quit");
 

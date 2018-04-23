@@ -36,8 +36,10 @@ if (File.exists(source_dir)) {
 		selectWindow("Result of "+list[i]);
 		run("Invert", "stack");
 		setAutoThreshold("Otsu dark");
-		run("Convert to Mask", "stack");
-		
+		getThreshold(L,U);
+		setThreshold(L, 65535);
+		run("Convert to Mask", "stack");	
+
 		orig_idx=getImageID();
 		title=getTitle();
 		IJ.log("\\Clear");

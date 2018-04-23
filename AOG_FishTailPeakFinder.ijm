@@ -1,0 +1,18 @@
+t=getTitle();
+z_project=t+"_ZProjection";
+peak=t+"_Peaks";
+run("Median...", "radius=1 stack");
+run("Z Project...", "projection=[Max Intensity]");
+rename(z_project);
+run("Enhance Contrast", "saturated=0.35");
+run("Duplicate...", "duplicate channels=2");
+rename(peak);
+run("Subtract Background...", "rolling=50");
+run("Gaussian Blur...", "sigma=4");
+selectWindow(z_project);
+waitForUser;
+selectWindow(peak);
+roiManager("Select", 0);
+run("Measure");
+run("Find Maxima...", "noise=12 output=[Point Selection]");
+run("Find Maxima...", "noise=12 output=Count");

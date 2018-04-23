@@ -1,54 +1,13 @@
 peak1_channel=2;
-peak2_channel=3;
-peak3_channel=4;
+peak2_channel=2;
+peak3_channel=2;
 DAPI_channel=1;
-
-//Kai TIFF_20151005_egfr3RNAseqHomeostasis
-SNR_worm=8;
-SNR_peaks1=100;
-SNR_peaks2=100;
-SNR_peaks3=1000;
-
-//Kai TIFF_20151005_nrg7_2i_1250rads
-SNR_worm=8;
-SNR_peaks1=100;
-SNR_peaks2=400;
-SNR_peaks3=1000;
-
-//CPA 20160321
-SNR_worm=4;
-SNR_peaks1=100;
-SNR_peaks2=400;
-SNR_peaks3=800;
-
-//LEM 20160526
-SNR_worm=8;
-SNR_peaks1=200;
-SNR_peaks2=75;
-SNR_peaks3=40;
-
-/*peak1_channel=3;
-peak2_channel=3;
-peak3_channel=3;
-DAPI_channel=1;
-
-SNR_worm=300;
-SNR_peaks1=50;
-SNR_peaks2=100;
-SNR_peaks3=300;
-*/
-
-//FGM 04082016
-/*SNR_worm=8;
-SNR_peaks1=50;
-SNR_peaks2=75;
-SNR_peaks3=100;
 
 //CPA 20160614
 SNR_worm=3;
-SNR_peaks1=200;
-SNR_peaks2=500;
-SNR_peaks3=1000;*/
+SNR_peaks1=2000;
+SNR_peaks2=4000;
+SNR_peaks3=8000;
 
 current_file=getArgument;
 
@@ -60,42 +19,27 @@ else
 {
      //current_file=name;
 }
+while (roiManager("count")>0)
+{
+	roiManager("Select", 0);
+	roiManager("delete");
+}
 IJ.log(current_file);
 run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 open(current_file);
 
-//run("Slice Keeper", "first=1 last=64 increment=1");
 title=getTitle();
 
-//run("Max Project With Reference", "channels=4 frames=1");
-/*run("Scale...", "x=.5 y=.5 z=1.0 width=1827 height=1022 depth=3 interpolation=Bilinear average create");
-rename("Img");
-selectWindow(title);
-close();
-selectWindow("Img");
-rename(title);*/
+if (selectionType()==-1)
+{
+	run("Close All");
+	return("");
+}
 
-
-/*To get rid of large borders when the peaks are also in the border
- * 
- */
-/*setSlice(3);
-run("Duplicate...", "title=BadEdges channels=3");
-run("32-bit");
-
-run("Percentile Threshold", "percentile=30 snr=120");
-
-run("Analyze Particles...", "size=10000-Infinity show=Masks display clear");
-run("Invert");
-run("Divide...", "value=255");
-rename("BadWashMask");
-selectWindow("BadEdges");
-close();
-selectWindow("Result");
-close();
-selectWindow(title);*/
-//***********END BORDER REMOVAL*******************
-
+roiManager("Add");
+roiManager("Select", 0);	
+roiManager("Deselect");
+run("Select All");
 
 setSlice(peak1_channel);
 run("Duplicate...", "title=Peaks1 channels="+peak1_channel);
@@ -114,40 +58,31 @@ run("32-bit");
 selectWindow(title);
 setSlice(DAPI_channel);
 run("Duplicate...", "title=DAPI channels="+DAPI_channel);
-run("32-bit");
-run("Percentile Threshold", "percentile=30 snr="+SNR_worm);
-
+run("8-bit");
+roiManager("Select", 0);	
+setForegroundColor(255, 255, 255);
+run("Fill", "slice");
+setBackgroundColor(0, 0, 0);
+run("Clear Outside");
+roiManager("Deselect");
+run("Select All");
 
 selectWindow(title);
 close();
-selectWindow("Result");
-//run("Dilate");
-//run("Dilate");
-//run("Dilate");
-//run("Dilate");
-run("Fill Holes");
-run("Open");
-//run("Erode");
-//run("Erode");
-//run("Erode");
-//run("Erode");
+selectWindow("DAPI");
+
 
 run("Analyze Particles...", "size=30000-Infinity circularity=0.00-1.00 show=[Count Masks] display clear add");
 
 rename("duh");
-run("Mask Largest");
 setAutoThreshold("Default dark");
 setThreshold(1, 10000);
 run("Convert to Mask");
-run("Fill Holes");
 
-for (i=0; i<20; i++)
-{
-	run("Erode");
-}
+
+
 rename("Mask");
-selectWindow("Result");
-close();
+
 selectWindow("Mask");
 
 run("Analyze Particles...", "size=30000-Infinity circularity=0.00-1.00 show=Nothing display clear add");
@@ -173,7 +108,7 @@ if (still_good>0)
      selectWindow("Peaks1");
      roiManager("Select", 0);
      roiManager("Deselect");
-     run("Gaussian Blur...", "sigma=2 slice");
+     run("Smooth", "slice");
      roiManager("Deselect");
      roiManager("Select", 0);
      run("Measure");
@@ -192,7 +127,7 @@ if (still_good>0)
      selectWindow("Peaks2");
      roiManager("Select", 0);
      roiManager("Deselect");
-     run("Gaussian Blur...", "sigma=2 slice");
+     run("Smooth", "slice");
      roiManager("Deselect");
      roiManager("Select", 0);
      run("Measure");
@@ -208,7 +143,7 @@ if (still_good>0)
      selectWindow("Peaks3");
      roiManager("Select", 0);
      roiManager("Deselect");
-     run("Gaussian Blur...", "sigma=2 slice");
+     run("Smooth", "slice");
      roiManager("Deselect");
      roiManager("Select", 0);
      run("Measure");

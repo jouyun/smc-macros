@@ -1,9 +1,9 @@
-peak_channel=2;
-DAPI_channel=1;
+peak_channel=1;
+DAPI_channel=2;
 
 //Changed 20 to 10 09252013, J2 from 0805 bad
 SNR_worm=4;
-SNR_peaks=40;
+SNR_peaks=100;
 //08052013 Hanh did 120, she said she wanted to avoid the dimmer spots so switched to 700
 
 
@@ -36,31 +36,6 @@ run("Duplicate...", "title=Peaks channels="+peak_channel);
 selectWindow(title);
 setSlice(DAPI_channel);
 run("Duplicate...", "title=DAPI channels="+DAPI_channel);
-
-/*setBackgroundColor(0,0,0);
-run("Duplicate...", "title=Mask channels=1");
-
-run("Clear Outside");
-setThreshold(10.0000, 1770.0000);
-setOption("BlackBackground", true);
-run("Convert to Mask");
-run("Dilate");
-run("Dilate");
-run("Dilate");
-run("Dilate");
-run("Dilate");
-run("Dilate");
-run("Dilate");
-run("Fill Holes");
-run("Erode");
-run("Erode");
-run("Erode");
-run("Erode");
-run("Erode");
-run("Erode");
-run("Erode");
-selectWindow(title);
-close();*/
 
 run("32-bit");
 run("Percentile Threshold", "percentile=30 snr="+SNR_worm);
@@ -107,7 +82,7 @@ if (still_good>0)
 	still_good=1;
 	
 	selectWindow("Peaks");
-	run("Smooth", "slice");
+	run("Median...", "radius=2 slice");
 	roiManager("Select", 0);
 	run("Measure");
 	max=getResult("Max");
