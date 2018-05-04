@@ -1,13 +1,13 @@
 t=getTitle();
 setBatchMode(true);
 //for (i=0; i<1000; i++)
-for (i=0; i<200; i++)
+for (i=0; i<100; i++)
 {
 	selectWindow(t);
 	run("Duplicate...", "title=New duplicate");
 	angle=floor(random*180);
-	x_shift=floor(random*30-15);
-	y_shift=floor(random*30-15);
+	x_shift=floor(random*200-100);
+	y_shift=floor(random*200-100);
 	run("Rotate... ", "angle="+angle+" grid=1 interpolation=Bilinear stack");
 	run("Translate...", "x="+x_shift+" y="+y_shift+" interpolation=None stack");
 }
@@ -15,9 +15,9 @@ for (i=0; i<200; i++)
 run("Concatenate...", "all_open title=[Concatenated Stacks]");
 rename(t);
 
-makeRectangle(32, 32, 64, 64);
+makeRectangle(256, 256, 512, 512);
 run("Crop");
-saveAs("Tiff", "/home/smc/Data/SAS/processed/"+t+"_RotShift.tif");
+saveAs("Tiff", "/home/smc/Data/BRS/DeepLearn/"+t+"_RotShift.tif");
 return("");
 Stack.getDimensions(w,h,c,s,f);
 run("Split Channels");

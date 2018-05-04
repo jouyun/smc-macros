@@ -1,6 +1,6 @@
-channel_for_stitching=2;
+channel_for_stitching=3;
 pixel_size=0.8;
-mask_channel=2;
+mask_channel=3;
 
 name=getArgument;
 if (name=="")

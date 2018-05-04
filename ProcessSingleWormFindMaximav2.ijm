@@ -1,9 +1,9 @@
 peak_channel=1;
-DAPI_channel=2;
+DAPI_channel=3;
 
 //Changed 20 to 10 09252013, J2 from 0805 bad
-SNR_worm=4;
-SNR_peaks=100;
+SNR_worm=8;
+SNR_peaks=70;
 //08052013 Hanh did 120, she said she wanted to avoid the dimmer spots so switched to 700
 
 
@@ -23,7 +23,8 @@ open(current_file);
 run("Select All");
 
 title=getTitle();
-
+run("Median...", "radius=4 stack");
+//run("Gaussian Blur...", "sigma=2 stack");
 /*run("Z Project...", "projection=[Max Intensity]");
 tt=getTitle();
 selectWindow(title);
