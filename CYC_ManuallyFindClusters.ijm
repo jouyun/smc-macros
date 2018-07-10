@@ -10,8 +10,9 @@ else
 }
 
 t=getTitle();
-endf=indexOf(t, "background");
-root_name=substring(t, 0, endf-1);
+//endf=indexOf(t, "background");
+//root_name=substring(t, 0, endf-1);
+root_name=t;
 IJ.log(root_name);
 
 //Clean up contrast
@@ -22,9 +23,9 @@ for (i=1; i<4; i++)
 }
 Stack.setChannel(1);
 run("Green");
-setMinAndMax(10, 4000);
+setMinAndMax(70, 800);
 Stack.setChannel(2);
-setMinAndMax(10, 230);
+setMinAndMax(70, 2200);
 run("Magenta");
 Stack.setDisplayMode("grayscale");
 Stack.setActiveChannels("110");

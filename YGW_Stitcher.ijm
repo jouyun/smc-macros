@@ -1,3 +1,7 @@
+x_dim=2;
+y_dim=2;
+number_z_loops=2;
+
 name=getArgument;
 if (name=="")
 {
@@ -9,11 +13,11 @@ else
 }
 
 s=0;
-for (i=0; i<15; i++)
+for (i=0; i<number_z_loops; i++)
 {
-	for (j=0; j<9; j++)
+	for (j=0; j<x_dim*y_dim; j++)
 	{
-		run("Bio-Formats Importer", "open="+dir+"NDExp_Point"+IJ.pad(i,4)+"_Count"+IJ.pad(j,5)+"_Seq"+IJ.pad(i*9+j,4)+".nd2 autoscale color_mode=Default rois_import=[ROI manager] view=Hyperstack stack_order=XYCZT");
+		run("Bio-Formats Importer", "open="+dir+"NDExp_Point"+IJ.pad(i,4)+"_Count"+IJ.pad(j,5)+"_Seq"+IJ.pad(i*(x_dim*y_dim)+j,4)+".nd2 autoscale color_mode=Default rois_import=[ROI manager] view=Hyperstack stack_order=XYCZT");
 		//run("Bio-Formats Importer", "open="+dir+"NDExp_Point"+IJ.pad(i,4)+"_Count00001_Seq"+IJ.pad(i*15+1,4)+".nd2 autoscale color_mode=Default rois_import=[ROI manager] view=Hyperstack stack_order=XYCZT");
 		
 	}

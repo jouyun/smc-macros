@@ -1,7 +1,7 @@
-peak1_channel=2;
-peak2_channel=3;
-peak3_channel=4;
-DAPI_channel=1;
+peak1_channel=1;
+peak2_channel=1;
+peak3_channel=1;
+DAPI_channel=2;
 
 //Kai TIFF_20151005_egfr3RNAseqHomeostasis
 SNR_worm=8;
@@ -23,9 +23,15 @@ SNR_peaks3=800;
 
 //LEM 20160526
 SNR_worm=8;
-SNR_peaks1=200;
+SNR_peaks1=80;
 SNR_peaks2=75;
 SNR_peaks3=40;
+
+//EMD 20180521
+SNR_worm=8;
+SNR_peaks1=60;
+SNR_peaks2=40;
+SNR_peaks3=20;
 
 /*peak1_channel=3;
 peak2_channel=3;
@@ -141,7 +147,7 @@ setThreshold(1, 10000);
 run("Convert to Mask");
 run("Fill Holes");
 
-for (i=0; i<20; i++)
+for (i=0; i<0; i++)
 {
 	run("Erode");
 }
@@ -267,7 +273,7 @@ if (still_good&&(width>1024||height>1024))
      //IJ.log(""+peak1_count+","+peak2_count+","+getResult("Area",2)+","+max+","+min+","+Dmax+","+Dmin);
      IJ.log(""+peak1_count+","+peak2_count+","+peak3_count +","+getResult("Area",2)+","+max+","+min+","+Dmax+","+Dmin);
      logs=getInfo("log");
-     saveAs("Tiff", current_file+"_"+SNR_peaks1+"_"+SNR_peaks2+"_"+SNR_peaks3+"_mask.tif");
+     run("Save As Tiff", "save="+current_file+"_"+SNR_peaks1+"_"+SNR_peaks2+"_"+SNR_peaks3+"_mask.tif");
      close();
      run("Close All");
      return logs;

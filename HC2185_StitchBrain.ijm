@@ -1,8 +1,8 @@
 name=getArgument;
 
-number_of_segments=13;
-number_x_tiles=4;
-number_y_tiles=5;
+number_of_segments=2;
+number_x_tiles=2;
+number_y_tiles=2;
 
 if (name=="")
 {
@@ -31,7 +31,7 @@ for (i=0; i<(number_x_tiles*number_y_tiles); i++)
 }
 
 //run("Grid/Collection stitching", "type=[Grid: snake by rows] order=[Right & Down                ] grid_size_x="+number_x_tiles+" grid_size_y="+number_y_tiles+" tile_overlap=15 first_file_index_i=0 directory="+dir+" file_names=Tiffs{iiii}.tif output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]");
-run("Grid/Collection stitching", "type=[Grid: snake by rows] order=[Right & Down                ] grid_size_x="+number_x_tiles+" grid_size_y="+number_y_tiles+" tile_overlap=15 first_file_index_i=0 directory="+dir+" file_names=Tiffs{iiii}.tif output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]");
+run("Grid/Collection stitching", "type=[Grid: snake by rows] order=[Right & Down                ] grid_size_x="+number_x_tiles+" grid_size_y="+number_y_tiles+" tile_overlap=15 first_file_index_i=0 directory="+dir+" file_names=Tiffs{iiii}.tif output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]");
 run("Delete Slice", "delete=channel");
 run("Stack to Hyperstack...", "order=xyczt(default) channels="+c+" slices="+(number_of_segments*s)+" frames=1 display=Composite");
 run("Save As Tiff", "save="+dir+"Fused.tif");

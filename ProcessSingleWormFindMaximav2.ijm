@@ -1,9 +1,9 @@
-peak_channel=1;
+peak_channel=2;
 DAPI_channel=3;
 
 //Changed 20 to 10 09252013, J2 from 0805 bad
-SNR_worm=8;
-SNR_peaks=70;
+SNR_worm=3;
+SNR_peaks=7;
 //08052013 Hanh did 120, she said she wanted to avoid the dimmer spots so switched to 700
 
 
@@ -23,8 +23,8 @@ open(current_file);
 run("Select All");
 
 title=getTitle();
-run("Median...", "radius=4 stack");
-//run("Gaussian Blur...", "sigma=2 stack");
+//run("Median...", "radius=4 stack");
+run("Gaussian Blur...", "sigma=2 stack");
 /*run("Z Project...", "projection=[Max Intensity]");
 tt=getTitle();
 selectWindow(title);
@@ -50,10 +50,11 @@ for (i=0; i<0; i++)
 {
 	run("Erode");
 }
+
 run("Analyze Particles...", "size=100000-Infinity circularity=0.00-1.00 show=[Count Masks] display clear add");
 rename("duh");
-//run("Mask Largest");
-run("Mask Middle");
+run("Mask Largest");
+//run("Mask Middle");
 setAutoThreshold("Default dark");
 setThreshold(1, 10000);
 run("Convert to Mask");
@@ -83,7 +84,7 @@ if (still_good>0)
 	still_good=1;
 	
 	selectWindow("Peaks");
-	run("Median...", "radius=2 slice");
+	//run("Median...", "radius=2 slice");
 	roiManager("Select", 0);
 	run("Measure");
 	max=getResult("Max");

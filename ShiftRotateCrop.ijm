@@ -6,8 +6,8 @@ for (i=0; i<100; i++)
 	selectWindow(t);
 	run("Duplicate...", "title=New duplicate");
 	angle=floor(random*180);
-	x_shift=floor(random*200-100);
-	y_shift=floor(random*200-100);
+	x_shift=floor(random*100-50);
+	y_shift=floor(random*100-50);
 	run("Rotate... ", "angle="+angle+" grid=1 interpolation=Bilinear stack");
 	run("Translate...", "x="+x_shift+" y="+y_shift+" interpolation=None stack");
 }
@@ -15,9 +15,10 @@ for (i=0; i<100; i++)
 run("Concatenate...", "all_open title=[Concatenated Stacks]");
 rename(t);
 
-makeRectangle(256, 256, 512, 512);
+makeRectangle(128, 128, 256, 256);
 run("Crop");
-saveAs("Tiff", "/home/smc/Data/BRS/DeepLearn/"+t+"_RotShift.tif");
+saveAs("Tiff", "/n/core/micro/rek/zaf/brs/20180515_3PO_Test/20180515_120422_718/DeepLearning/"+t+"_RotShift.tif");
+//run("Save As Tiff", "save=S:\\micro\\rek\\zaf\\brs\\20180515_3PO_Test\\20180515_120422_718\\DeepLearning\\Truths.tif"+t+"_RotShift.tif");
 return("");
 Stack.getDimensions(w,h,c,s,f);
 run("Split Channels");

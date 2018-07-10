@@ -19,6 +19,7 @@ for (m=0; m<list.length; m++)
 {
 	if (File.isDirectory(source_dir+list[m]))
 	{
+		IJ.log(source_dir+list[m]);
 		sub_list=getFileList(source_dir+list[m]);
 		for (n=0; n<sub_list.length; n++)
 		{
@@ -61,7 +62,7 @@ for (m=0; m<list.length; m++)
 				if (!File.exists(projection_name))
 				{
 					open(candidate_name);
-					run("Z Project...", "projection=[Min Intensity]");
+					run("Z Project...", "projection=[Max Intensity]");
 					saveAs("Tiff", projection_name);
 					run("Close All");
 				}
