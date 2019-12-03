@@ -25,11 +25,11 @@ for (n=0; n<source_list.length; n++)
 			if (endsWith(list[m],".vsi")==1)
 			{
 				IJ.log("open="+worm_dir+list[m]+" color_mode=Default view=Hyperstack stack_order=XYCZT series_1");
-				run("Bio-Formats Importer", "open="+worm_dir+list[m]+" color_mode=Default view=Hyperstack stack_order=XYCZT series_1");
+				run("Bio-Formats Importer", "open="+worm_dir+list[m]+" color_mode=Default view=Hyperstack stack_order=XYCZT series_3");
 				a=getTitle();
 				run("Stack to RGB");
 				b=getTitle();
-				saveAs("Jpeg", worm_dir+list[m]+".jpg");
+				saveAs("Jpeg", substring(worm_dir, 0, lengthOf(worm_dir)-1)+".jpg");
 				close();
 				selectWindow(a);
 				close();

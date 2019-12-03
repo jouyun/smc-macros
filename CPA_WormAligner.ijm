@@ -1,14 +1,18 @@
-mask_channel=1;
+mask_channel=3;
+run("Set Measurements...", "area mean standard min centroid center perimeter bounding fit shape integrated median area_fraction stack display redirect=None decimal=3");
 
 real_thing=getTitle();
 run("Duplicate...", "title=Mask duplicate channels="+mask_channel);
-setAutoThreshold("Default dark");
-setOption("BlackBackground", true);
-run("Convert to Mask");
+
+run("32-bit");
+run("Percentile Threshold", "percentile=10 snr=15");
+//setAutoThreshold("Default dark");
+//setOption("BlackBackground", true);
+//run("Convert to Mask");
 
 mask_thing=getTitle();
 setBatchMode(false);
-run("Analyze Particles...", "size=25000-Infinity circularity=0.00-1.00 show=Nothing display");
+run("Analyze Particles...", "size=2500-Infinity circularity=0.00-1.00 show=Nothing display");
 x=getResult("XM", nResults-1);
 y=getResult("YM",nResults-1);
 theta=getResult("Angle", nResults-1);
@@ -57,7 +61,12 @@ width=getWidth();
 height=getHeight();
 makeRectangle(width/2-Major*1.1/2, height/2-Minor*1.1/2, Major*1.1,Minor*1.1);
 run("Crop");
-run("Scale...", "x=- y=- z=1.0 width=600 height=200 depth=5 interpolation=Bilinear average create");
+
+run("Scale...", "x=.25 y=.25 z=1.0 width=592 height=310 depth=3 interpolation=Bilinear average create");
+run("Canvas Size...", "width=1000 height=400 position=Center zero");
+
+//run("Scale...", "x=- y=- z=1.0 width=600 height=200 depth=5 interpolation=Bilinear average create");
+
 /*makeOval(width/2-Major/2, height/2-Minor/2, Major,Minor);
 run("Invert");
 makeOval(width/2-Major*1.1/2, height/2-Minor*1.1/2, Major*1.1,Minor*1.1);

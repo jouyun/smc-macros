@@ -19,5 +19,6 @@ for (n=0; n<source_list.length; n++)
 		runMacro("U:\\smc\\Fiji_2016.app\\macros\\HC2185_StitchBrain.ijm", dir_name);
 	}
 	run("Close All");
+	run("Collect Garbage");
 	//close();
 }

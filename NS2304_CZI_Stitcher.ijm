@@ -1,0 +1,17 @@
+fname=File.openDialog("Choose File");
+Dialog.create("Choose parameters");
+Dialog.addNumber("Columns: ", 6);
+Dialog.addNumber("Rows: ",9);
+Dialog.addNumber("Overlap: ",9);
+Dialog.show();
+x=Dialog.getNumber();
+y=Dialog.getNumber();
+overlap=Dialog.getNumber();
+dir=File.getParent(fname);
+IJ.log("x,y,overlap: "+x+","+y+","+overlap);
+run("Bio-Formats Importer", "open="+fname+" autoscale color_mode=Default concatenate_series open_all_series view=Hyperstack stack_order=XYCZT");
+run("Z Project...", "projection=[Max Intensity] all");
+run("Save Multipage Image Sequence", "path="+dir);
+close();
+run("Grid/Collection stitching", "type=[Grid: snake by rows] order=[Right & Down                ] grid_size_x="+x+" grid_size_y="+y+" tile_overlap="+overlap+" first_file_index_i=0 directory="+dir+" file_names=Tiffs{iiii}.tif output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]");
+//run("Grid/Collection stitching", "type=[Grid: snake by rows] order=[Right & Down                ] grid_size_x="+x+" grid_size_y="+y+" tile_overlap="+overlap+" first_file_index_i=0 directory="+dir+" file_names=Tiffs{iiii}.tif output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]");

@@ -1,0 +1,15 @@
+t=getTitle();
+//run("Duplicate...", "duplicate");
+run("Z Project...", "projection=[Max Intensity]");
+tt=getTitle();
+//run("Brightness/Contrast...");
+run("Enhance Contrast", "saturated=0.35");
+run("In [+]");
+//run("Channels Tool...");
+run("Grays");
+run("Median...", "radius=4");
+run("Log3D", "imp="+getTitle()+" sigmax=8.0 sigmay=8.0 sigmaz=1.0");
+run("Find Maxima...", "noise=500 output=[Point Selection]");
+roiManager("Add");
+selectWindow(tt);
+roiManager("Select", roiManager("Count")-1);

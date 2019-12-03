@@ -1,60 +1,16 @@
 peak1_channel=1;
 peak2_channel=1;
 peak3_channel=1;
-DAPI_channel=2;
+DAPI_channel=3;
 
-//Kai TIFF_20151005_egfr3RNAseqHomeostasis
-SNR_worm=8;
-SNR_peaks1=100;
-SNR_peaks2=100;
-SNR_peaks3=1000;
+
 
 //Kai TIFF_20151005_nrg7_2i_1250rads
-SNR_worm=8;
-SNR_peaks1=100;
-SNR_peaks2=400;
-SNR_peaks3=1000;
-
-//CPA 20160321
-SNR_worm=4;
-SNR_peaks1=100;
-SNR_peaks2=400;
-SNR_peaks3=800;
-
-//LEM 20160526
-SNR_worm=8;
+SNR_worm=15;
 SNR_peaks1=80;
-SNR_peaks2=75;
-SNR_peaks3=40;
-
-//EMD 20180521
-SNR_worm=8;
-SNR_peaks1=60;
-SNR_peaks2=40;
-SNR_peaks3=20;
-
-/*peak1_channel=3;
-peak2_channel=3;
-peak3_channel=3;
-DAPI_channel=1;
-
-SNR_worm=300;
-SNR_peaks1=50;
 SNR_peaks2=100;
-SNR_peaks3=300;
-*/
+SNR_peaks3=150;
 
-//FGM 04082016
-/*SNR_worm=8;
-SNR_peaks1=50;
-SNR_peaks2=75;
-SNR_peaks3=100;
-
-//CPA 20160614
-SNR_worm=3;
-SNR_peaks1=200;
-SNR_peaks2=500;
-SNR_peaks3=1000;*/
 
 current_file=getArgument;
 
@@ -69,6 +25,8 @@ else
 IJ.log(current_file);
 run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 open(current_file);
+Stack.getDimensions(width, height, channels, slices, frames);
+run("Properties...", "channels="+channels+" slices=1 frames=1 unit=micron pixel_width=1 pixel_height=1 voxel_depth=1");
 
 //run("Slice Keeper", "first=1 last=64 increment=1");
 title=getTitle();
@@ -101,6 +59,8 @@ selectWindow("Result");
 close();
 selectWindow(title);*/
 //***********END BORDER REMOVAL*******************
+
+
 
 
 setSlice(peak1_channel);
@@ -140,8 +100,10 @@ run("Open");
 
 run("Analyze Particles...", "size=30000-Infinity circularity=0.00-1.00 show=[Count Masks] display clear add");
 
+
 rename("duh");
 run("Mask Largest");
+
 setAutoThreshold("Default dark");
 setThreshold(1, 10000);
 run("Convert to Mask");
@@ -158,6 +120,7 @@ selectWindow("Mask");
 
 run("Analyze Particles...", "size=30000-Infinity circularity=0.00-1.00 show=Nothing display clear add");
 still_good=0;
+
 if (nResults>0) still_good=1;
 rename("Mask");
 selectWindow("DAPI");
@@ -263,7 +226,8 @@ if (still_good>0)
 }
 else
 {
-     close();
+     run("Close All");
+     return "";
 }
 Stack.getDimensions(width, height, channels, slices, frames);
 

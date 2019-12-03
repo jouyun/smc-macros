@@ -1,6 +1,8 @@
-channel_for_stitching=3;
-pixel_size=0.8;
-mask_channel=3;
+channel_for_stitching=2;
+//pixel_size=1.56;
+pixel_size=0.78;
+//pixel_size=0.39;
+mask_channel=1;
 
 name=getArgument;
 if (name=="")
@@ -12,9 +14,36 @@ else
      source_dir=name;
 }
 IJ.log(source_dir);
-setBatchMode(true);
+setBatchMode(false);
 list = getFileList(source_dir);
 IJ.log(list[0]);
+
+//Cleanup file names
+for (m=0; m<list.length; m++)
+{
+	if (File.isDirectory(source_dir+list[m]))
+	{
+		IJ.log(source_dir+list[m]);
+		sub_list=getFileList(source_dir+list[m]);
+		for (n=0; n<sub_list.length; n++)
+		{
+ 		    if (indexOf(sub_list[n],"Count")>0)
+ 		    {
+ 		    	cur_file=source_dir+list[m]+sub_list[n];
+ 		    	IJ.log(cur_file);
+ 		    	//IJ.log("NDExp_"+substring(sub_list[n],0,36)+substring(sub_list[n],lengthOf(sub_list[n])-11,lengthOf(sub_list[n])));
+ 		    	p_start=indexOf(sub_list[n], "Plate");
+ 		    	new_file=source_dir+list[m]+"NDExp_"+substring(sub_list[n],p_start,36+p_start)+substring(sub_list[n],lengthOf(sub_list[n])-11,lengthOf(sub_list[n]));
+ 		    	IJ.log(new_file);
+ 		    	File.rename(cur_file, new_file);
+ 		    	
+ 		    }
+		}
+	}
+}
+list = getFileList(source_dir);
+IJ.log(list[0]);
+
 for (m=0; m<list.length; m++)
 {
 	if (File.isDirectory(source_dir+list[m]))
@@ -52,9 +81,12 @@ for (m=0; m<list.length; m++)
 				if (!File.exists(candidate_name))
 				{
 					//run("Stitch Robot nd2", "directory="+source_dir+list[m]+" plate="+plate+" well="+well+" object="+object+" channel=4");
-					run("Stitch Robot nd2", "directory="+source_dir+list[m]+" plate="+plate+" well="+well+" object="+object+" channel="+channel_for_stitching+" override pixel="+pixel_size);
+					run("Stitch Robot nd2", "directory="+source_dir+list[m]+" plate="+plate+" well="+well+" object="+object+" channel="+channel_for_stitching+" override pixel="+pixel_size+" fusion=[Max. Intensity]");
 
 					run("Save As Tiff", "save=["+candidate_name+"]");
+//run("Trim In Z Automatically", "fraction=0.05");
+//run("Make Composite", "display=Grayscale");
+//run("Median...", "radius=0.2 stack");
 					run("Z Project...", "projection=[Max Intensity]");
 					saveAs("Tiff", projection_name);
 					run("Close All");
@@ -62,6 +94,9 @@ for (m=0; m<list.length; m++)
 				if (!File.exists(projection_name))
 				{
 					open(candidate_name);
+//run("Trim In Z Automatically", "fraction=0.05");
+//run("Make Composite", "display=Grayscale");
+//run("Median...", "radius=0.2 stack");
 					run("Z Project...", "projection=[Max Intensity]");
 					saveAs("Tiff", projection_name);
 					run("Close All");
@@ -72,7 +107,7 @@ for (m=0; m<list.length; m++)
 					run("32-bit");
 					Stack.getDimensions(width, height, channels, slices, frames);
 					if (channels>1) Stack.setChannel(mask_channel);
-					run("Percentile Threshold", "percentile=10 snr=30");
+					run("Percentile Threshold", "percentile=10 snr=15");
 					rename("pthresh");
 					run("Analyze Particles...", "size=100000-Infinity show=[Count Masks] display");
 					rename("partan");
@@ -91,4 +126,4 @@ for (m=0; m<list.length; m++)
 	  }
 	}
 }
-run("Quit");
+//run("Quit");

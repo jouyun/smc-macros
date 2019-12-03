@@ -1,6 +1,6 @@
 name=getArgument;
 
-number_of_segments=2;
+number_of_segments=7;
 number_x_tiles=2;
 number_y_tiles=2;
 

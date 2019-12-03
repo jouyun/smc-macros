@@ -33,7 +33,7 @@ for (n=0; n<source_list.length; n++)
 			//if (File.exists(fname+".zip"))
 			{
 				//open(fname+".zip");
-				runMacro("U:\\smc\\Fiji_2016.app\\macros\\VPS_QuantifyRedLargeNucleii.ijm", source_dir);
+				runMacro("U:\\smc\\Fiji_2016.app\\macros\\VPS_HighMagQuantification.ijm", source_dir);
 				//runMacro("/home/smc/Fiji.app/macros/VPS_QuantifyRedLargeNucleii.ijm", source_dir);
 				//runMacro("/home/smc/Fiji.app/macros/AHK_ProcessStellaWells.ijm");
 				//saveAs("Results", fname+"_Results.csv");

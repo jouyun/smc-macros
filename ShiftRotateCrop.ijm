@@ -1,24 +1,33 @@
 t=getTitle();
-setBatchMode(true);
+setBatchMode(false);
 //for (i=0; i<1000; i++)
-for (i=0; i<100; i++)
+number_turns=99;
+Stack.getDimensions(w,h,c,s,f);
+for (i=0; i<number_turns; i++)
 {
 	selectWindow(t);
 	run("Duplicate...", "title=New duplicate");
-	angle=floor(random*180);
-	x_shift=floor(random*100-50);
-	y_shift=floor(random*100-50);
+	angle=floor(random*360)-180;
+	x_shift=floor(random*500-250);
+	y_shift=floor(random*500-250);
 	run("Rotate... ", "angle="+angle+" grid=1 interpolation=Bilinear stack");
-	run("Translate...", "x="+x_shift+" y="+y_shift+" interpolation=None stack");
+	run("Translate...", "x="+x_shift+" y="+y_shift+" interpolation=Bilinear stack");
 }
 
 run("Concatenate...", "all_open title=[Concatenated Stacks]");
 rename(t);
 
-makeRectangle(128, 128, 256, 256);
+makeRectangle(256, 256, 512, 512);
 run("Crop");
-saveAs("Tiff", "/n/core/micro/rek/zaf/brs/20180515_3PO_Test/20180515_120422_718/DeepLearning/"+t+"_RotShift.tif");
-//run("Save As Tiff", "save=S:\\micro\\rek\\zaf\\brs\\20180515_3PO_Test\\20180515_120422_718\\DeepLearning\\Truths.tif"+t+"_RotShift.tif");
+/*run("Stack to Hyperstack...", "order=xyczt(default) channels=3 slices="+(number_turns+1)+" frames="+f+" display=Grayscale");
+run("Re-order Hyperstack ...", "channels=[Channels (c)] slices=[Frames (t)] frames=[Slices (z)]");
+run("Hyperstack to Stack");
+run("Stack to Hyperstack...", "order=xyczt(default) channels=3 slices=1 frames="+(f*number_turns)+" display=Grayscale");
+*/
+
+saveAs("Tiff", "/n/projects/smc/public/STN/19-6-3b_ali_level_fullsize/Training/"+t+"_RotShift.tif");
+//saveAs("Tiff", "/n/projects/smc/public/STN/NucleiDLTest/alignedFullRes_slices300-400/"+t+"_RotShift.tif");
+//run("Save As Tiff", "save=/n/core/micro/nro/lo2296/smc/MuscleFibers/DL/"+t+"_RotShift.tif");
 return("");
 Stack.getDimensions(w,h,c,s,f);
 run("Split Channels");

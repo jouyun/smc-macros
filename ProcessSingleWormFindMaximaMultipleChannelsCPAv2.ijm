@@ -5,9 +5,9 @@ peak2_channel=2;
 DAPI_channel=3;
 
 //Choose thresholds
-SNR_worm=2;
+SNR_worm=15;
 SNR_peaks1=2000;
-SNR_peaks2=200;
+SNR_peaks2=500;
 
 //Clear out ROI Manager
 if (isOpen("ROI Manager")) 
@@ -37,14 +37,15 @@ run("Properties...", "channels=3 slices=1 frames=1 unit=pixel pixel_width=1 pixe
 //Make mask from DAPI
 run("Duplicate...", "title=DAPI duplicate channels="+DAPI_channel);
 selectWindow("DAPI");
-//run("32-bit");
-//run("Percentile Threshold", "percentile=30 snr="+SNR_worm);
-//setOption("BlackBackground", true);
+run("Replace Zero With Noise", "baseline=107 spread=111");
+run("Gaussian Blur...", "sigma=5");
+run("32-bit");
+run("Percentile Threshold", "percentile=30 snr=20");
 //For older data had to manually set threshold
 //	setThreshold(113.0000, 3.4e38);
 //	run("Convert to Mask");
 //run("Erode");
-waitForUser;
+//waitForUser;
 run("Fill Holes");
 run("Distance Map");
 setAutoThreshold("Default dark");

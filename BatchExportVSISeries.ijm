@@ -8,12 +8,12 @@ else
      source_dir=name;
 }
 IJ.log(source_dir);
-setBatchMode(true);
+setBatchMode(false);
 list = getFileList(source_dir);
 IJ.log(list[0]);
 for (m=0; m<list.length; m++)
 {
-	if (File.isDirectory(source_dir+list[m]))
+	if (File.isDirectory(source_dir+list[m])&&(endsWith(substring(list[m], 0, lengthOf(list[m])-1), "01")!=true))
 	{
 		list[m]=substring(list[m], 0, lengthOf(list[m])-1);
 		sub_list=getFileList(source_dir+list[m]+File.separator);
@@ -24,7 +24,7 @@ for (m=0; m<list.length; m++)
 			if (endsWith(sub_list[n], ".vsi"))
 			{
 				IJ.log(source_dir+list[m]+File.separator+sub_list[n]);
-				run("Bio-Formats Importer", "open="+source_dir+list[m]+File.separator+sub_list[n]+" color_mode=Default rois_import=[ROI manager] view=Hyperstack stack_order=XYCZT series_5");
+				run("Bio-Formats Importer", "open="+source_dir+list[m]+File.separator+sub_list[n]+" color_mode=Default rois_import=[ROI manager] view=Hyperstack stack_order=XYCZT series_1");
 
 				Stack.getDimensions(width, height, channels, slices, frames);
 				//if (height>width) run("Rotate 90 Degrees Right");
@@ -33,8 +33,8 @@ for (m=0; m<list.length; m++)
 				//run("Scale Bar...", "width=500 height=60 font=155 color=Black background=None location=[Lower Right] bold overlay label");
 				rename("A");
 				IJ.log("save="+source_dir+list[m]+".tif imp="+getTitle());				
-				//run("Save As Tiff", "save="+source_dir+list[m]+".tif imp="+getTitle());
-				run("Save As Tiff", "save="+source_dir+list[m]+File.separator+sub_list[n]+".tif imp="+getTitle());
+				run("Save As Tiff", "save="+source_dir+list[m]+".tif imp="+getTitle());
+				//run("Save As Tiff", "save="+source_dir+list[m]+File.separator+sub_list[n]+".tif imp="+getTitle());
 				close();
 				run("Close All");
 			}
