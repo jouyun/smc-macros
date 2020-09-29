@@ -30,10 +30,11 @@ run("32-bit");
 trimmed=getTitle();
 //run("Z Project...", "projection=[Max Intensity]");
 z_projected=getTitle();
-setSlice(4);
+Stack.getDimensions(width, height, channels, slices, frames);
+setSlice(channels);
 
 //run("Percentile Threshold", "percentile=10 snr=6");
-run("Duplicate...", "title=DAPI duplicate channels=3");
+run("Duplicate...", "title=DAPI duplicate channels="+channels);
 run("Percentile Threshold", "percentile=10 snr=18");
 setOption("BlackBackground", true);
 run("Dilate");
@@ -47,7 +48,7 @@ run("8-bit");
 run("Fill Holes");
 run("Set Measurements...", "area mean standard min centroid center perimeter bounding fit shape integrated skewness limit display redirect=None decimal=3");
 //run("Analyze Particles...", "size=1000-Infinity display clear add");
-run("Analyze Particles...", "size=100000-Infinity display clear add");
+run("Analyze Particles...", "size=60000-Infinity display clear add");
 
 if (nResults>0)
 {
@@ -107,8 +108,12 @@ if (nResults>0)
 	setMinAndMax(0, 680);
 	Stack.setChannel(2);
 	setMinAndMax(100, 2000);
-	Stack.setChannel(3);
-	setMinAndMax(100, 240);
+	if (channels>2)
+	{
+		Stack.setChannel(3);
+		setMinAndMax(100, 240);
+	}
+	
 	if (name!="")
 	{
 		//saveAs("Tiff", name+"_large_aligned.tif");

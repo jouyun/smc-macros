@@ -30,6 +30,8 @@ for (n=0; n<source_list.length; n++)
 		for (c=0; c<ct; c++)
 		{
 			selectWindow(t);
+			selectWindow(t);
+			selectWindow(t);
 			roiManager("Select", c);
 			run("Duplicate...", "title="+t+"_"+c+" duplicate");
 			setBackgroundColor(0, 0, 0);
@@ -72,6 +74,7 @@ for (n=0; n<source_list.length; n++)
 			//setThreshold(0.04, 1);
 			//setAutoThreshold("IsoData dark");
 			run("Threshold...");
+			//setAutoThreshold("Default dark");
 			waitForUser;
 			setOption("BlackBackground", true);
 			run("Convert to Mask");

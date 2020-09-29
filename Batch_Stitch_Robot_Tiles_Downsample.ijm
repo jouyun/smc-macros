@@ -82,16 +82,16 @@ for (m=0; m<list.length; m++)
 				{
 					run("Stitch Robot nd2_v2", "directory="+source_dir+list[m]+" plate="+plate+" well="+well+" object="+object+" channel="+channel_for_stitching+" override pixel="+pixel_size+" fusion=[Max. Intensity]");
 					Stack.getDimensions(width, height, channels, slices, frames);
-/*run("Scale...", "x=.5 y=.5 z=.5 width=1024 height=1022 depth=63 interpolation=Bilinear average create");
-rename("Scaled");
-run("Duplicate...", "duplicate slices=1-40");		
-rename("Duped");
-selectWindow("Img");
-close();
-selectWindow("Scaled");
-close();
-selectWindow("Duped");
-rename("Img");		*/	
+					run("Scale...", "x=.5 y=.5 z=.5 width=1024 height=1022 depth=63 interpolation=Bilinear average create");
+					rename("Scaled");
+					run("Duplicate...", "duplicate slices=1-40");		
+					rename("Duped");
+					selectWindow("Img");
+					close();
+					selectWindow("Scaled");
+					close();
+					selectWindow("Duped");
+					rename("Img");			
 					if (frames>1 && frames<30)
 					{
 						run("Flip Horizontally", "stack");
@@ -119,13 +119,13 @@ rename("Img");		*/
 					saveAs("Tiff", projection_name);
 					run("Close All");
 				}
-				if (!File.exists(projection_name))
+				/*if (!File.exists(projection_name))
 				{
 					open(candidate_name);
 					run("Z Project...", "projection=[Max Intensity]");
 					saveAs("Tiff", projection_name);
 					run("Close All");
-				}
+				}*/
 	  		}
       }
       for (i=0; i<100; i++)

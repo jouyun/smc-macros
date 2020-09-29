@@ -1,3 +1,4 @@
+
 peak1_channel=1;
 peak2_channel=1;
 peak3_channel=1;
@@ -6,11 +7,11 @@ DAPI_channel=3;
 
 
 //Kai TIFF_20151005_nrg7_2i_1250rads
-SNR_worm=15;
-SNR_peaks1=80;
-SNR_peaks2=100;
-SNR_peaks3=150;
-
+SNR_worm=20;
+SNR_peaks1=20;
+SNR_peaks2=200;
+SNR_peaks3=100;
+//channel 2 H3P 200
 
 current_file=getArgument;
 
@@ -41,8 +42,8 @@ rename(title);*/
 
 
 /*To get rid of large borders when the peaks are also in the border
- * 
- */
+*
+*/
 /*setSlice(3);
 run("Duplicate...", "title=BadEdges channels=3");
 run("32-bit");
@@ -63,20 +64,46 @@ selectWindow(title);*/
 
 
 
-setSlice(peak1_channel);
+/*setSlice(peak1_channel);
 run("Duplicate...", "title=Peaks1 channels="+peak1_channel);
-run("Median...", "radius=.5 stack");
+run("Median...", "radius=1.5 stack");
+run("32-bit");*/
+
+setSlice(peak1_channel);
+run("Duplicate...", "title=A channels="+peak1_channel);
+run("Median...", "radius=6");
 run("32-bit");
+
+
+//run("Percentile Threshold", "percentile=30 snr=150");
+run("Duplicate...", "title=Result");
+setThreshold(300.0000, 1000000000000000000000000000000.0000);
+setOption("BlackBackground", true);
+run("Convert to Mask");
+
+
+run("Dilate");
+run("Dilate");
+run("16-bit");
+run("Divide...", "value=255");
+imageCalculator("Multiply create", "A","Result");
+rename("Peaks1");
+selectWindow("A");
+close();
+selectWindow("Result");
+close();
 selectWindow(title);
 setSlice(peak2_channel);
 run("Duplicate...", "title=Peaks2 channels="+peak2_channel);
-run("Median...", "radius=.5 stack");
+//run("Median...", "radius=1.5 stack");
 run("32-bit");
+
 selectWindow(title);
 setSlice(peak3_channel);
 run("Duplicate...", "title=Peaks3 channels="+peak3_channel);
-run("Median...", "radius=.5 stack");
+run("Median...", "radius=1.5 stack");
 run("32-bit");
+
 selectWindow(title);
 setSlice(DAPI_channel);
 run("Duplicate...", "title=DAPI channels="+DAPI_channel);
@@ -93,11 +120,10 @@ selectWindow("Result");
 //run("Dilate");
 run("Fill Holes");
 run("Open");
-//run("Erode");
-//run("Erode");
-//run("Erode");
-//run("Erode");
-
+for (i=0; i<56; i++)
+{
+    //run("Erode");
+}
 run("Analyze Particles...", "size=30000-Infinity circularity=0.00-1.00 show=[Count Masks] display clear add");
 
 
@@ -109,9 +135,19 @@ setThreshold(1, 10000);
 run("Convert to Mask");
 run("Fill Holes");
 
+//Alternative Border Removal
+run("Invert");
+run("Distance Transform 3D");
+setAutoThreshold("Default dark");
+//run("Threshold...");
+setThreshold(50.0000, 1000000000000000000000000000000.0000);
+setOption("BlackBackground", true);
+run("Convert to Mask");
+//End Alternative Border Removal
+
 for (i=0; i<0; i++)
 {
-	run("Erode");
+    run("Erode");
 }
 rename("Mask");
 selectWindow("Result");
@@ -138,11 +174,11 @@ if (still_good>0)
      IJ.log("results:  "+nResults);
      still_good=1;
 
-	 
+    
      selectWindow("Peaks1");
      roiManager("Select", 0);
      roiManager("Deselect");
-     run("Gaussian Blur...", "sigma=2 slice");
+     run("Gaussian Blur...", "sigma=1 slice");
      roiManager("Deselect");
      roiManager("Select", 0);
      run("Measure");
@@ -152,7 +188,7 @@ if (still_good>0)
      selectWindow("Peaks1");
      run("Find Maxima...", "noise="+SNR_peaks1+" output=[Single Points]");
      //imageCalculator("Multiply 32-bit stack", getTitle(),"BadWashMask");  //Remove for no bad mask
-	 //run("Find Maxima...", "noise="+SNR_peaks1+" output=[Single Points]");	 //Remove for no bad mask
+     //run("Find Maxima...", "noise="+SNR_peaks1+" output=[Single Points]");     //Remove for no bad mask
      run("Dilate");
      rename("Spots1");
      run("32-bit");
@@ -161,7 +197,7 @@ if (still_good>0)
      selectWindow("Peaks2");
      roiManager("Select", 0);
      roiManager("Deselect");
-     run("Gaussian Blur...", "sigma=2 slice");
+     //run("Gaussian Blur...", "sigma=2 slice");
      roiManager("Deselect");
      roiManager("Select", 0);
      run("Measure");
@@ -169,7 +205,7 @@ if (still_good>0)
      min=getResult("Min");
      run("Find Maxima...", "noise="+SNR_peaks2+" output=[Single Points]");
      //imageCalculator("Multiply 32-bit stack", getTitle(),"BadWashMask");  //Remove for no bad mask
-	 //run("Find Maxima...", "noise="+SNR_peaks1+" output=[Single Points]");	 //Remove for no bad mask
+     //run("Find Maxima...", "noise="+SNR_peaks2+" output=[Single Points]");     //Remove for no bad mask
      run("Dilate");
      rename("Spots2");
      run("32-bit");
@@ -185,7 +221,7 @@ if (still_good>0)
      min=getResult("Min");
      run("Find Maxima...", "noise="+SNR_peaks3+" output=[Single Points]");
      //imageCalculator("Multiply 32-bit stack", getTitle(),"BadWashMask");  //Remove for no bad mask
-	 //run("Find Maxima...", "noise="+SNR_peaks1+" output=[Single Points]");	 //Remove for no bad mask
+     //run("Find Maxima...", "noise="+SNR_peaks3+" output=[Single Points]");     //Remove for no bad mask
      run("Dilate");
      rename("Spots3");
      run("32-bit");

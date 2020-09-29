@@ -24,7 +24,7 @@ for (m=0; m<list.length; m++)
 			if (endsWith(sub_list[n], ".vsi"))
 			{
 				IJ.log(source_dir+list[m]+File.separator+sub_list[n]);
-				run("Bio-Formats Importer", "open="+source_dir+list[m]+File.separator+sub_list[n]+" color_mode=Default rois_import=[ROI manager] view=Hyperstack stack_order=XYCZT series_1");
+				run("Bio-Formats Importer", "open="+source_dir+list[m]+File.separator+sub_list[n]+" color_mode=Default rois_import=[ROI manager] view=Hyperstack stack_order=XYCZT series_2");
 
 				Stack.getDimensions(width, height, channels, slices, frames);
 				//if (height>width) run("Rotate 90 Degrees Right");
