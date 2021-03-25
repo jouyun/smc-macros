@@ -1,4 +1,3 @@
-
 peak1_channel=1;
 peak2_channel=1;
 peak3_channel=1;
@@ -7,10 +6,10 @@ DAPI_channel=3;
 
 
 //Kai TIFF_20151005_nrg7_2i_1250rads
-SNR_worm=20;
-SNR_peaks1=20;
-SNR_peaks2=200;
-SNR_peaks3=100;
+SNR_worm=50;
+SNR_peaks1=120;
+SNR_peaks2=500;
+SNR_peaks3=800;
 //channel 2 H3P 200
 
 current_file=getArgument;
@@ -73,15 +72,7 @@ setSlice(peak1_channel);
 run("Duplicate...", "title=A channels="+peak1_channel);
 run("Median...", "radius=6");
 run("32-bit");
-
-
-//run("Percentile Threshold", "percentile=30 snr=150");
-run("Duplicate...", "title=Result");
-setThreshold(300.0000, 1000000000000000000000000000000.0000);
-setOption("BlackBackground", true);
-run("Convert to Mask");
-
-
+run("Percentile Threshold", "percentile=30 snr=150");
 run("Dilate");
 run("Dilate");
 run("16-bit");
@@ -92,6 +83,7 @@ selectWindow("A");
 close();
 selectWindow("Result");
 close();
+
 selectWindow(title);
 setSlice(peak2_channel);
 run("Duplicate...", "title=Peaks2 channels="+peak2_channel);
@@ -174,7 +166,7 @@ if (still_good>0)
      IJ.log("results:  "+nResults);
      still_good=1;
 
-    
+
      selectWindow("Peaks1");
      roiManager("Select", 0);
      roiManager("Deselect");
@@ -192,7 +184,7 @@ if (still_good>0)
      run("Dilate");
      rename("Spots1");
      run("32-bit");
-     
+
 
      selectWindow("Peaks2");
      roiManager("Select", 0);
@@ -240,7 +232,7 @@ if (still_good>0)
      setSlice(7);
      run("Find Maxima...", "noise="+(100)+" output=Count");
      peak3_count=getResult("Count");
-   
+
      run("Re-order Hyperstack ...", "channels=[Slices (z)] slices=[Channels (c)] frames=[Frames (t)]");
      Stack.setDisplayMode("grayscale");
      setSlice(1);
@@ -278,4 +270,3 @@ if (still_good&&(width>1024||height>1024))
      run("Close All");
      return logs;
 }
-

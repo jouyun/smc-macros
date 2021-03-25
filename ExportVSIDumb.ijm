@@ -31,7 +31,7 @@ for (n=0; n<source_list.length; n++)
 	        	if (indexOf(t,"20x_")>1)
 	        	{
 	        		close();
-	        		idx = idx +1;
+	        		idx = idx +1*0;
 	        		run("Bio-Formats Importer", "open="+fname+" color_mode=Default rois_import=[ROI manager] view=Hyperstack stack_order=XYCZT series_list="+(idx));
 	        		if (isOpen(1))
 					{

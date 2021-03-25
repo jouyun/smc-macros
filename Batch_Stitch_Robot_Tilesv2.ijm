@@ -80,7 +80,8 @@ for (m=0; m<list.length; m++)
 				IJ.log(candidate_name);
 				if (!File.exists(candidate_name))
 				{
-					run("Stitch Robot nd2_v2", "directory="+source_dir+list[m]+" plate="+plate+" well="+well+" object="+object+" channel="+channel_for_stitching+" override pixel="+pixel_size+" fusion=[Max. Intensity]");
+					IJ.log("directory="+source_dir+list[m]+" plate="+plate+" well="+well+" object="+object+" channel="+channel_for_stitching+" override pixel="+pixel_size+" fusion=[Max. Intensity]");
+					run("Stitch Robot nd2v3", "directory="+source_dir+list[m]+" plate="+plate+" well="+well+" object="+object+" channel="+channel_for_stitching+" override pixel="+pixel_size+" fusion=[Max. Intensity]");
 					Stack.getDimensions(width, height, channels, slices, frames);
 /*run("Scale...", "x=.5 y=.5 z=.5 width=1024 height=1022 depth=63 interpolation=Bilinear average create");
 rename("Scaled");
