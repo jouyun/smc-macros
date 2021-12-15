@@ -25,7 +25,7 @@ for (n=0; n<source_list.length; n++)
 			run("Close All");
 			setBatchMode(true);
 			IJ.log(cur_file+list[m]);
-			if (endsWith(list[m],"_projection.tif")==true&&endsWith(list[m], "mask.tif")==0&&endsWith(list[m],".tif")==1)
+			if (endsWith(list[m],"_projection.tif")==true&&endsWith(list[m], "mask.tif")==0&&endsWith(list[m],".tif")==1&&endsWith(list[m], "aligned.tif")==0&&endsWith(list[m], "combined.tif")==0&&endsWith(list[m], "ummary.tif")==0)
 			{
 				//if (!File.exists(cur_file+list[m]+"_processed.tif"))	runMacro("U:\\smc\\Fiji_2016.app\\macros\\SpotFinderv3.ijm", cur_file+list[m]);
 				//else IJ.log("Skipped: "+cur_file+list[m]);

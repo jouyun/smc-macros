@@ -34,11 +34,11 @@ imageCalculator("Multiply create 32-bit", "C1-asdf","C3-asdf");
 run("Enhance Contrast", "saturated=0.35");
 setThreshold(550.0000, 44779.0000);
 run("Convert to Mask");
-run("Analyze Particles...", "size=500-Infinity show=Masks exclude");
+run("Analyze Particles...", "size=250-Infinity show=Masks exclude");
 run("Invert LUT");
 run("Dilate");
 //run("Dilate");
-run("Analyze Particles...", "size=500-Infinity exclude add");
+run("Analyze Particles...", "size=250-Infinity exclude add");
 selectWindow(t);
 roiManager("Show All");
 

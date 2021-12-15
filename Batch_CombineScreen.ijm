@@ -21,12 +21,12 @@ for (n=0; n<source_list.length; n++)
 			IJ.log(cur_file+list[m]);
 			if (endsWith(list[m],"_aligned.tif")==false&&endsWith(list[m],"_projection.tif")==true&&endsWith(list[m], ".tif")==true&&startsWith(list[m], "Plate"))
 			{
-				//logs=runMacro("U:\\smc\\Fiji_2016.app\\macros\\Align_3D_Worms.ijm", cur_file+list[m]);
-				logs=runMacro("/n/projects/smc/Fiji_2016.app/macros/Align_3D_Worms.ijm", cur_file+list[m]);
+				logs=runMacro("U:\\smc\\Fiji_2016.app\\macros\\Align_3D_Worms.ijm", cur_file+list[m]);
+				//logs=runMacro("/n/projects/smc/Fiji_2016.app/macros/Align_3D_Worms.ijm", cur_file+list[m]);
 			}
 		}
-		//runMacro("U:\\smc\\Fiji_2016.app\\macros\\CombineScreens.ijm", cur_file);
-		logs=runMacro("/n/projects/smc/Fiji_2016.app/macros/CombineScreens.ijm", cur_file);
+		runMacro("U:\\smc\\Fiji_2016.app\\macros\\CombineScreens.ijm", cur_file);
+		//logs=runMacro("/n/projects/smc/Fiji_2016.app/macros/CombineScreens.ijm", cur_file);
 	}
 }
 run("Close All");

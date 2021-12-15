@@ -7,9 +7,9 @@ else
 {
 	source_dir=name;
 }
-
+run("Set Measurements...", "area mean standard modal min centroid center perimeter bounding fit shape integrated stack display redirect=None decimal=3");
 run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
-setBatchMode(true);
+setBatchMode(false);
 first_list = getFileList(source_dir);
 for (m=0; m<first_list.length; m++)
 {
@@ -24,7 +24,7 @@ for (m=0; m<first_list.length; m++)
 			IJ.log(fname);
 			if (endsWith(fname, ".JPG"))
 			{
-				runMacro("U:\\smc\\Fiji_2016.app\\macros\\CPA_Quantify_WebcamLengthv2.ijm", fname);
+				runMacro("U:\\smc\\Fiji_2016.app\\macros\\CPA_Quantify_WebcamLengthv3.ijm", fname);
 				run("Close All");
 			}
 		}
