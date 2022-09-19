@@ -1,9 +1,9 @@
 // 5 2 2000
 
-xy_blur=2.0;
+xy_blur=4.0;
 z_blur=1;
 
-thresh=10000.0;
+thresh=30000.0;
 rename("Original");
 t=getTitle();
 run("32-bit");
