@@ -24,6 +24,7 @@ for (n=0; n<source_list.length; n++)
 			{
 				IJ.log(cur_file);
 				run("SIMR Nd2 Reader", "imagefile="+cur_file);
+				run("Gaussian Blur 3D...", "x=1 y=1 z=0.2");
 				run("Subtract Background...", "rolling=50");
 				save_name = cur_file;
 				save_name = substring(save_name, 0, lengthOf(save_name)-4)+".tif";
